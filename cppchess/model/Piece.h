@@ -11,6 +11,9 @@ namespace Chess::Model
 	{
 	public:
 		Piece(Enums::Colour colour, Point position) : colour(colour), coord(position) {};
+		Piece(const Piece& other): colour(other.colour), coord(other.coord) {}
+		virtual ~Piece() {}
+		virtual Piece* Copy() = 0;
 		bool IsWhite() const { return colour == Enums::Colour::WHITE; }
 		Point GetPosition() const { return coord; }
 		void MoveTo(Point position) { coord.Move(position.GetX(), position.GetY()); }

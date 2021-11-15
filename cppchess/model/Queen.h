@@ -9,6 +9,8 @@ namespace Chess::Model
 	{
 	public:
 		Queen(Enums::Colour colour, Point position) : Piece(colour, position) {};
+
+		Piece* Copy() override { return (Piece*) new Queen(*this); }
 		Enums::PieceType GetType() const override { return Enums::QUEEN; }
 	};
 }

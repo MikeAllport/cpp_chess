@@ -9,6 +9,10 @@ namespace Chess::Model
 	{
 	public:
 		King(Enums::Colour colour, Point position) : Piece(colour, position) {};
+		King(const King& other): Piece(other), hasMoved(other.hasMoved) {}
+		~King(){}
+
+		Piece* Copy() override { return (Piece*) new King(*this); }
 		Enums::PieceType GetType() const override { return Enums::KING; }
 		bool HasMoved() { return hasMoved; };
 		void SetMoved() { hasMoved = true; }
