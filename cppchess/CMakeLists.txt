@@ -17,7 +17,7 @@ set(Headers
 	model/Move.h
 	model/Player.h
 	model/AllPiecesInclude.h
-	utils/FilterableList.h
+	utils/VectorHelper.h
 	controller/MoveController.h
 	controller/BoardController.h
 )

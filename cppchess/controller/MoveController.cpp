@@ -2,7 +2,7 @@
 
 namespace Chess::Controller
 {
-	FilterableList<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Piece* piece)
+	VectorHelper<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Piece* piece)
 	{
 		switch (piece->GetType())
 		{
@@ -19,13 +19,13 @@ namespace Chess::Controller
 			case Model::Enums::QUEEN :
 				return GetMoves((Model::Queen*)piece);
 			default: 
-				return FilterableList<Model::Move>();
+				return VectorHelper<Model::Move>();
 		}
 	}
 
-	FilterableList<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Pawn* piece)
+	VectorHelper<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Pawn* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		int direction;
 		if (player.IsWhite())
 		{
@@ -76,14 +76,14 @@ namespace Chess::Controller
 		return moves;
 	}
 
-	FilterableList<Model::Move> MoveController::GetMoves(Model::Bishop* piece)
+	VectorHelper<Model::Move> MoveController::GetMoves(Model::Bishop* piece)
 	{
 		return GetVerticalMoves(piece);
 	}
 
-	FilterableList<Model::Move> MoveController::GetMoves(Model::Horse* piece)
+	VectorHelper<Model::Move> MoveController::GetMoves(Model::Horse* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		auto position = piece->GetPosition();
 		// side 2 spaces
 		AddPieceMove(moves, piece, position.GetX() - 2, position.GetY() + 1);
@@ -96,17 +96,17 @@ namespace Chess::Controller
 		AddPieceMove(moves, piece, position.GetX() - 1, position.GetY() - 2);
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() + 2);
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 2);
-		return FilterableList<Model::Move>();
+		return VectorHelper<Model::Move>();
 	}
 
-	FilterableList<Model::Move> MoveController::GetMoves(Model::Castle* piece)
+	VectorHelper<Model::Move> MoveController::GetMoves(Model::Castle* piece)
 	{
 		return GetVerticalMoves(piece).Concatenate(GetHorizontalMoves(piece));
 	}
 
-	FilterableList<Model::Move> MoveController::GetMoves(Model::King* piece)
+	VectorHelper<Model::Move> MoveController::GetMoves(Model::King* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		auto position = piece->GetPosition();
 		AddPieceMove(moves, piece, position.GetX() - 1, position.GetY());
 		AddPieceMove(moves, piece, position.GetX() - 1, position.GetY() - 1);
@@ -116,17 +116,17 @@ namespace Chess::Controller
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() + 1);
-		return FilterableList<Model::Move>();
+		return VectorHelper<Model::Move>();
 	}
 
-	FilterableList<Model::Move> MoveController::GetMoves(Model::Queen* piece)
+	VectorHelper<Model::Move> MoveController::GetMoves(Model::Queen* piece)
 	{
 		return GetDiagonalMoves(piece).Concatenate(GetHorizontalMoves(piece).Concatenate(GetVerticalMoves(piece)));
 	}
 
-	FilterableList<Model::Move> MoveController::GetDiagonalMoves(Model::Piece* piece)
+	VectorHelper<Model::Move> MoveController::GetDiagonalMoves(Model::Piece* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		int pieceX = piece->GetPosition().GetX();
 		int pieveY = piece->GetPosition().GetY();
 		bool canMove = true;
@@ -159,7 +159,7 @@ namespace Chess::Controller
 		return moves;
 	}
 
-	bool MoveController::AddPieceMove(FilterableList<Model::Move>& moves, Model::Piece* piece, int x, int y)
+	bool MoveController::AddPieceMove(VectorHelper<Model::Move>& moves, Model::Piece* piece, int x, int y)
 	{
 		if (x < 0 || x > 7 || y < 0 || y > 7)
 		{
@@ -177,9 +177,9 @@ namespace Chess::Controller
 		return false;
 	}
 
-	FilterableList<Model::Move> MoveController::GetHorizontalMoves(Model::Piece* piece)
+	VectorHelper<Model::Move> MoveController::GetHorizontalMoves(Model::Piece* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		int y = piece->GetPosition().GetY();
 		bool canMove = true;
 
@@ -197,9 +197,9 @@ namespace Chess::Controller
 		return moves;
 	}
 
-	FilterableList<Model::Move> MoveController::GetVerticalMoves(Model::Piece* piece)
+	VectorHelper<Model::Move> MoveController::GetVerticalMoves(Model::Piece* piece)
 	{
-		FilterableList<Model::Move> moves;
+		VectorHelper<Model::Move> moves;
 		int x = piece->GetPosition().GetX();
 		bool canMove = true;
 

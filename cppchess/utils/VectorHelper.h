@@ -6,13 +6,13 @@
 #include <algorithm>
 
 template <class T>
-class FilterableList
+class VectorHelper
 {
 public:
-	FilterableList() : v() {}
-	FilterableList<T> Filter(std::function<bool(T)> comparitor);
+	VectorHelper() : v() {}
+	VectorHelper<T> Filter(std::function<bool(T)> comparitor);
 	bool Contains(T other) { return std::find(std::begin(v), std::end(v), other) != std::end(v);}
-	FilterableList<T>& Concatenate(FilterableList<T>& other) {
+	VectorHelper<T>& Concatenate(VectorHelper<T>& other) {
 		for(T ele: other.v)
 		{
 			v.push_back(ele);
@@ -23,8 +23,8 @@ public:
 };
 
 template <class T>
-FilterableList<T> FilterableList<T>::Filter(std::function<bool(T)> comparitor) {
-	FilterableList<T> newList;
+VectorHelper<T> VectorHelper<T>::Filter(std::function<bool(T)> comparitor) {
+	VectorHelper<T> newList;
 	for (std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		if (comparitor(*it))

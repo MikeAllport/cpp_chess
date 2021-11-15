@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
 	cout << "Hello CMake." << endl;
-	FilterableList<int> list;
+	VectorHelper<int> list;
 	list.v = { 1, 2, 3, 4, 5 };
 	auto newList = list.Filter([](int a) { return a == 1 || a == 2; });
 	for (int a : newList.v)

@@ -13,7 +13,7 @@
 #include "cppchess/model/Castle.h"
 #include "cppchess/model/Board.h"
 #include "cppchess/model/Player.h"
-#include "cppchess/utils/FilterableList.h"
+#include "cppchess/utils/VectorHelper.h"
 #include "cppchess/model/Move.h"
 #include "cppchess/controller/MoveController.h"
 #include "cppchess/controller/BoardController.h"
