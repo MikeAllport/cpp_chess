@@ -56,7 +56,7 @@ namespace Chess::Controller
 		Model::Point leftDiag(position.GetX()-1, position.GetY() + direction);
 		Model::Point rightDiag(position.GetX()+1, position.GetY() + direction);
 		// forward check
-		if (infront.GetY() >= 0 && infront.GetY() <= 8 &&
+		if (infront.GetY() >= 0 && infront.GetY() <= 7 &&
 			board(infront) == nullptr)
 		{
 			moves.v.push_back(Model::Move(position, infront, false));
@@ -69,7 +69,7 @@ namespace Chess::Controller
 		}
 
 		// rightDiag
-		if(rightDiag.GetX() <= 8 && board(rightDiag) && board(rightDiag)->IsWhite() != piece->IsWhite())
+		if(rightDiag.GetX() <= 7 && board(rightDiag) && board(rightDiag)->IsWhite() != piece->IsWhite())
 		{
 			moves.v.push_back(Model::Move(position, rightDiag, true));
 		}
@@ -96,7 +96,7 @@ namespace Chess::Controller
 		AddPieceMove(moves, piece, position.GetX() - 1, position.GetY() - 2);
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() + 2);
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 2);
-		return VectorHelper<Model::Move>();
+		return moves;
 	}
 
 	VectorHelper<Model::Move> MoveController::GetMoves(Model::Castle* piece)
@@ -116,7 +116,7 @@ namespace Chess::Controller
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() + 1);
-		return VectorHelper<Model::Move>();
+		return moves;
 	}
 
 	VectorHelper<Model::Move> MoveController::GetMoves(Model::Queen* piece)

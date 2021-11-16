@@ -17,6 +17,8 @@ public:
 	// in vector that the comparitor returns true
 	VectorHelper<T> Filter(std::function<bool(T)> comparitor);
 
+	T FirstOrNull(std::function<bool(T)> comparitor);
+
 	// simple contains method, returns boolean if parameter exists is vector. T must implement
 	// operator==
 	bool Contains(T other) { return std::find(std::begin(v), std::end(v), other) != std::end(v);}
@@ -44,6 +46,18 @@ VectorHelper<T> VectorHelper<T>::Filter(std::function<bool(T)> comparitor) {
 		}
 	}
 	return newList;
+}
+
+template <class T>
+T VectorHelper<T>::FirstOrNull(std::function<bool(T)> comparitor) {
+	for (std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
+	{
+		if (comparitor(*it))
+		{
+			return *it;
+		}
+	}
+	return nullptr;
 }
 
 #endif

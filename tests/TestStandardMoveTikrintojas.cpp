@@ -15,9 +15,9 @@ class StandardMoveTikrintojasTest
 public:
     StandardMoveTikrintojasTest() :  board(), 
         player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
-        c_move(board, player),
         c_board(board, player),
-        c_movecheck(board, c_board) { }
+        c_movecheck(board, c_board),
+        c_move(board, c_movecheck, player) { }
         Chess::Model::Board board;
         Chess::Model::Player player;
         Chess::Controller::MoveController c_move;
@@ -39,5 +39,36 @@ TEST(StandardTikrintojas, KingCheckMate)
     auto moves = test.c_move.GetValidMoves(blackKing);
     EXPECT_TRUE(moves.v.size() == 0);
 };
+
+TEST(StandardTikrintojas, PiecePutsKingInCheck)
+{
+    StandardMoveTikrintojasTest test;
+    Chess::Model::Piece* blackQueen = new Chess::Model::Queen(Chess::Model::Enums::BLACK, Chess::Model::Point(7,0));
+    Chess::Model::Piece* whitePawn = new Chess::Model::Pawn(Chess::Model::Enums::WHITE, Chess::Model::Point(7,1));
+    Chess::Model::Piece* whiteKing = new Chess::Model::King(Chess::Model::Enums::WHITE, Chess::Model::Point(7,2));
+    test.c_board.AddPiece(blackQueen);
+    test.c_board.AddPiece(whitePawn);
+    test.c_board.AddPiece(whiteKing);
+    auto pawnMoves = test.c_move.GetValidMoves(whitePawn);
+    auto kingMoves = test.c_move.GetValidMoves(whiteKing);
+    EXPECT_TRUE(pawnMoves.v.size() == 0);
+    EXPECT_TRUE(kingMoves.v.size() == 3);
+};
+
+TEST(StandardTikrintojas, KingMoveOutOfCheckSomeBlockedCastle)
+{
+    StandardMoveTikrintojasTest test;
+    Chess::Model::Piece* blackHorse = new Chess::Model::Horse(Chess::Model::Enums::BLACK, Chess::Model::Point(5,0));
+    Chess::Model::Piece* blackCastle = new Chess::Model::Castle(Chess::Model::Enums::BLACK, Chess::Model::Point(0,2));
+    Chess::Model::Piece* whiteKing = new Chess::Model::King(Chess::Model::Enums::WHITE, Chess::Model::Point(7,1));
+    test.c_board.AddPiece(blackHorse);
+    test.c_board.AddPiece(blackCastle);
+    test.c_board.AddPiece(whiteKing);
+    auto kingMoves = test.c_move.GetValidMoves(whiteKing);
+    EXPECT_TRUE(kingMoves.v.size() == 3);
+    EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(7,0); }).v.size() == 1);
+    EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(6,1); }).v.size() == 1);
+    EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(6,0); }).v.size() == 1);
+}
 
 #endif
