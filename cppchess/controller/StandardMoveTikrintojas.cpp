@@ -3,7 +3,7 @@
 
 namespace Chess::Controller
 {
-    bool StandardMoveTikrintojas::IsMoveValid(Model::Move move, MoveController& c_move) const
+    bool StandardMoveTikrintojas::IsMoveValid(const Model::Move move, MoveController& c_move) const
     {
         // get copy of piece in the from position
         Model::Piece* pieceFromPosition = board(move.FromPosition().GetX(), move.FromPosition().GetY())->Copy();
