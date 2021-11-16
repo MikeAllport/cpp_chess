@@ -13,14 +13,17 @@ namespace Chess::Controller
     public:
         BoardController(Model::Board& board, Model::Player& player): 
             board(board),
-            player(player) {};
+            player(player) { };
         void AddPiece(Model::Piece* piece);
         void MakeMove(Model::Move move);
         Model::Piece* TakePiece(Model::Point);
         void PlacePiece(Model::Piece* piece, Model::Point place);
         void RemovePiece(Model::Piece* piece);
+        VectorHelper<Model::Piece*> ActivePieces();
+        Model::Piece* GetPieceSafe(Model::Point position);
         Model::Piece* GetPieceSafe(int x, int y);
         Model::King* GetKing(bool isWhiteKing);
+        Model::King* GetKing(Model::Enums::Colour colour);
     private:
         void PawnToQueenCheck(Model::Pawn* piece);
         void CastleWhiteKing(Model::King* king, Model::Move move);

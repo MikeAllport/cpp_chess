@@ -22,12 +22,14 @@ set(Headers
 	controller/BoardController.h
 	controller/MoveTikrintojas.h
 	controller/StandardMoveTikrintojas.h
+	controller/DadsMoveTikrintojas.h
 )
 
 set(Sources
-	Controller/MoveController.cpp
+	controller/MoveController.cpp
 	controller/BoardController.cpp
 	controller/StandardMoveTikrintojas.cpp
+	controller/DadsMoveTikrintojas.cpp
 )
 
 # Add source to this project's executable.

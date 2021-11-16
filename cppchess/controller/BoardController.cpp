@@ -8,6 +8,31 @@ namespace Chess::Controller
         board.activePieces.v.push_back(piece);
     }
 
+    VectorHelper<Model::Piece*> BoardController::ActivePieces()
+    {
+        return board.ActivePieces();
+    }
+
+    Model::Piece* BoardController::GetPieceSafe(const int x, const int y)
+    {
+        return x < 0 || x > 7 || y < 0 || y > 7? nullptr: board(x, y);
+    }
+
+    Model::Piece* BoardController::GetPieceSafe(Model::Point position)
+    {
+        return GetPieceSafe(position.GetX(), position.GetY());
+    }
+
+    Model::King* BoardController::GetKing(bool isWhiteKing)
+    {
+        return (Model::King*)board.ActivePieces().Filter([isWhiteKing](Model::Piece* piece){ return piece->IsWhite() == isWhiteKing && piece->GetType() == Model::Enums::KING; }).v[0];
+    }
+
+    Model::King* BoardController::GetKing(Model::Enums::Colour colour)
+    {
+        return GetKing(colour == Model::Enums::WHITE? true: false);
+    }
+
     void BoardController::MakeMove(Model::Move move) 
     { 
         Model::Piece* pieceFrom = TakePiece(move.FromPosition());
@@ -138,15 +163,5 @@ namespace Chess::Controller
                 MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(7,5), false));
             }
         }
-    }
-
-    Model::Piece* BoardController::GetPieceSafe(const int x, const int y)
-    {
-        return x < 0 || x > 7 || y < 0 || y > 7? nullptr: board(x, y);
-    }
-
-    Model::King* BoardController::GetKing(bool isWhiteKing)
-    {
-        return (Model::King*)board.ActivePieces().Filter([isWhiteKing](Model::Piece* piece){ return piece->IsWhite() == isWhiteKing && piece->GetType() == Model::Enums::KING; }).v[0];
     }
 }
