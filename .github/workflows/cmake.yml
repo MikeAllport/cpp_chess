@@ -20,9 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: CMAKE dl
-      run: set(cmake_version "3.8")
       
     - name: Checkout submodules
       run: git submodule update --init --recursive
