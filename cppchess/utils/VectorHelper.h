@@ -38,7 +38,7 @@ public:
 template <class T>
 VectorHelper<T> VectorHelper<T>::Filter(std::function<bool(T)> comparitor) {
 	VectorHelper<T> newList;
-	for (std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
+	for (typename std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		if (comparitor(*it))
 		{
@@ -50,7 +50,7 @@ VectorHelper<T> VectorHelper<T>::Filter(std::function<bool(T)> comparitor) {
 
 template <class T>
 T VectorHelper<T>::FirstOrNull(std::function<bool(T)> comparitor) {
-	for (std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
+	for (typename std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		if (comparitor(*it))
 		{
