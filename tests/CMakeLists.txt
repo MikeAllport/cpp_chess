@@ -16,6 +16,7 @@ set(This cppchessTests)
 set(Sources
 	TestMoveController.cpp
 	TestBoardController.cpp
+	TestStandardMoveTikrintojas.cpp
 )
 
 add_executable(${This} ${Sources})

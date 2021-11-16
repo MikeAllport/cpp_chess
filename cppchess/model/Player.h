@@ -9,7 +9,7 @@ namespace Chess::Model
 	{
 	public:
 		Player(Enums::Player player, Enums::Colour colour) : player(player), colour(colour) { }
-		bool IsWhite() { return colour == Enums::WHITE; }
+		bool IsWhite() const { return colour == Enums::WHITE; }
 	private:
 		Enums::Player player;
 		Enums::Colour colour;

@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include "../cppchess/controller/MoveController.h"
 #include "../cppchess/controller/BoardController.h"
+#include "../cppchess/controller/StandardMoveTikrintojas.h"
 #include "../cppchess/model/AllPiecesInclude.h"
 #include "../cppchess/model/Piece.h"
 #include "../cppchess/model/Pawn.h"
@@ -15,8 +16,8 @@ public:
     MoveControllerTest() :  board(), 
         pawn(new Chess::Model::Pawn(Chess::Model::Enums::BLACK, Chess::Model::Point(1, 0))),
         player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
-        c_move(board, player),
-        c_board(board, player) { c_board.PlacePiece(pawn, pawn->GetPosition());}
+        c_board(board, player), 
+        c_move(board, Chess::Controller::StandardMoveTikrintojas(board, c_board), player) { c_board.PlacePiece(pawn, pawn->GetPosition());}
         Chess::Model::Board board;
         Chess::Model::Pawn* pawn;
         Chess::Model::Player player;

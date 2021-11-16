@@ -17,6 +17,7 @@
 #include "cppchess/model/Move.h"
 #include "cppchess/controller/MoveController.h"
 #include "cppchess/controller/BoardController.h"
+#include "cppchess/controller/MoveTikrintojas.h"
 
 
 namespace Chess

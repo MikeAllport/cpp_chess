@@ -20,11 +20,14 @@ set(Headers
 	utils/VectorHelper.h
 	controller/MoveController.h
 	controller/BoardController.h
+	controller/MoveTikrintojas.h
+	controller/StandardMoveTikrintojas.h
 )
 
 set(Sources
 	Controller/MoveController.cpp
 	controller/BoardController.cpp
+	controller/StandardMoveTikrintojas.cpp
 )
 
 # Add source to this project's executable.

@@ -19,6 +19,8 @@ namespace Chess::Controller
         Model::Piece* TakePiece(Model::Point);
         void PlacePiece(Model::Piece* piece, Model::Point place);
         void RemovePiece(Model::Piece* piece);
+        Model::Piece* GetPieceSafe(int x, int y);
+        Model::King* GetKing(bool isWhiteKing);
     private:
         void PawnToQueenCheck(Model::Pawn* piece);
         void CastleWhiteKing(Model::King* king, Model::Move move);

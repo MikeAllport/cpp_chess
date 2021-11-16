@@ -30,6 +30,30 @@ namespace Chess::Controller
         }
     }
 
+    Model::Piece* BoardController::TakePiece(Model::Point from) 
+    {
+        Model::Piece* returnPiece = board(from);
+        board.board[from.GetY()][from.GetX()] = nullptr;
+        return returnPiece;
+    }
+
+    void BoardController::PlacePiece(Model::Piece* piece, Model::Point place)
+    {
+        piece->MoveTo(place);
+        Model::Piece* takenPiece = board(place);
+        board.board[place.GetY()][place.GetX()] = piece;
+        if (takenPiece)
+        {
+            RemovePiece(takenPiece);
+        }
+    }
+
+    void BoardController::RemovePiece(Model::Piece* piece)
+    {
+        board.activePieces = board.activePieces.Filter([&piece](Model::Piece* toInspect) { return piece != toInspect;});
+        delete piece;
+    }
+
     void BoardController::PawnToQueenCheck(Model::Pawn* piece)
     {
         if(player.IsWhite())
@@ -116,27 +140,13 @@ namespace Chess::Controller
         }
     }
 
-    Model::Piece* BoardController::TakePiece(Model::Point from) 
+    Model::Piece* BoardController::GetPieceSafe(const int x, const int y)
     {
-        Model::Piece* returnPiece = board(from);
-        board.board[from.GetY()][from.GetX()] = nullptr;
-        return returnPiece;
+        return x < 0 || x > 7 || y < 0 || y > 7? nullptr: board(x, y);
     }
 
-    void BoardController::PlacePiece(Model::Piece* piece, Model::Point place)
+    Model::King* BoardController::GetKing(bool isWhiteKing)
     {
-        piece->MoveTo(place);
-        Model::Piece* takenPiece = board(place);
-        board.board[place.GetY()][place.GetX()] = piece;
-        if (takenPiece)
-        {
-            RemovePiece(takenPiece);
-        }
-    }
-
-    void BoardController::RemovePiece(Model::Piece* piece)
-    {
-        board.activePieces = board.activePieces.Filter([&piece](Model::Piece* toInspect) { return piece != toInspect;});
-        delete piece;
+        return (Model::King*)board.ActivePieces().Filter([isWhiteKing](Model::Piece* piece){ return piece->IsWhite() == isWhiteKing && piece->GetType() == Model::Enums::KING; }).v[0];
     }
 }
