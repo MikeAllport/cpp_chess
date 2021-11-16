@@ -17,12 +17,14 @@ public:
         pawn(new Chess::Model::Pawn(Chess::Model::Enums::BLACK, Chess::Model::Point(1, 0))),
         player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
         c_board(board, player), 
+        c_movecheck(new Chess::Controller::StandardMoveTikrintojas(board, c_board)),
         c_move(board, Chess::Controller::StandardMoveTikrintojas(board, c_board), player) { c_board.PlacePiece(pawn, pawn->GetPosition());}
         Chess::Model::Board board;
         Chess::Model::Pawn* pawn;
         Chess::Model::Player player;
-        Chess::Controller::MoveController c_move;
         Chess::Controller::BoardController c_board;
+        Chess::Controller::MoveTikrintojas* c_movecheck;
+        Chess::Controller::MoveController c_move;
 };
 
 TEST(MoveController, PawnMoveForward)
