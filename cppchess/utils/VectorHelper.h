@@ -24,12 +24,13 @@ public:
 	bool Contains(T other) { return std::find(std::begin(v), std::end(v), other) != std::end(v);}
 
 	// simple concatenate method, adds all the elements from others vector and returns itself
-	VectorHelper<T>& Concatenate(VectorHelper<T>& other) {
+	VectorHelper<T> Concatenate(VectorHelper<T>& other) {
+		VectorHelper<T> toReturn = *this;
 		for(T ele: other.v)
 		{
-			v.push_back(ele);
+			toReturn.v.push_back(ele);
 		}
-		return *this;
+		return toReturn;
 	}
 	std::vector<T> v;
 };
