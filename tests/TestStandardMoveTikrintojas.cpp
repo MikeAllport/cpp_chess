@@ -16,13 +16,13 @@ public:
     StandardMoveTikrintojasTest() :  board(), 
         player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
         c_board(board, player),
-        c_movecheck(board, c_board),
-        c_move(board, c_movecheck, player) { }
+        c_movecheck(new Chess::Controller::StandardMoveTikrintojas(board, c_board)),
+        c_move(board, *c_movecheck, player) { }
         Chess::Model::Board board;
         Chess::Model::Player player;
-        Chess::Controller::MoveController c_move;
         Chess::Controller::BoardController c_board;
-        Chess::Controller::StandardMoveTikrintojas c_movecheck;
+        Chess::Controller::MoveTikrintojas* c_movecheck;
+        Chess::Controller::MoveController c_move;
 };
 
 
