@@ -18,7 +18,7 @@ public:
         player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
         c_board(board, player), 
         c_movecheck(new Chess::Controller::StandardMoveTikrintojas(board, c_board)),
-        c_move(board, Chess::Controller::StandardMoveTikrintojas(board, c_board), player) { c_board.PlacePiece(pawn, pawn->GetPosition());}
+        c_move(board, c_movecheck, player) { c_board.PlacePiece(pawn, pawn->GetPosition());}
         Chess::Model::Board board;
         Chess::Model::Pawn* pawn;
         Chess::Model::Player player;
