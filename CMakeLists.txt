@@ -2,7 +2,7 @@
 # and include sub-projects here.
 #
 cmake_minimum_required (VERSION 3.8)
-set(This cppchess)
+set(This cppchessproject)
 
 project (${This} VERSION 1.0)
 set (CMAKE_CXX_STANDARD 17)
@@ -22,7 +22,7 @@ add_subdirectory ("cppchess")
 add_subdirectory ("tests")
 add_executable(${This} ${Headers} ${Sources})
 target_link_libraries(${This} PUBLIC chess)
-target_include_directories(cppchess PUBLIC
+target_include_directories(cppchessproject PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           "${PROJECT_SOURCE_DIR}/cppchess"
                           )    
