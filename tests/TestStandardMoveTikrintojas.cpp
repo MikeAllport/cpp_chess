@@ -55,17 +55,21 @@ TEST(StandardTikrintojas, PiecePutsKingInCheck)
     EXPECT_TRUE(kingMoves.v.size() == 3);
 };
 
-TEST(StandardTikrintojas, KingMoveOutOfCheckSomeBlockedCastle)
+TEST(StandardTikrintojas, KingMoveOutOfCheckSomeBlockedCastleQueenCanTakeAttacker)
 {
     StandardMoveTikrintojasTest test;
     Chess::Model::Piece* blackHorse = new Chess::Model::Horse(Chess::Model::Enums::BLACK, Chess::Model::Point(5,0));
     Chess::Model::Piece* blackCastle = new Chess::Model::Castle(Chess::Model::Enums::BLACK, Chess::Model::Point(0,2));
     Chess::Model::Piece* whiteKing = new Chess::Model::King(Chess::Model::Enums::WHITE, Chess::Model::Point(7,1));
+    Chess::Model::Piece* whiteQueen = new Chess::Model::Queen(Chess::Model::Enums::WHITE, Chess::Model::Point(5, 7));
     test.c_board.AddPiece(blackHorse);
     test.c_board.AddPiece(blackCastle);
     test.c_board.AddPiece(whiteKing);
+    test.c_board.AddPiece(whiteQueen);
     auto kingMoves = test.c_move.GetValidMoves(whiteKing);
+    auto queenMoves = test.c_move.GetValidMoves(whiteQueen);
     EXPECT_TRUE(kingMoves.v.size() == 3);
+    EXPECT_TRUE(queenMoves.v.size() == 1);
     EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(7,0); }).v.size() == 1);
     EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(6,1); }).v.size() == 1);
     EXPECT_TRUE(kingMoves.Filter([](Chess::Model::Move move) { return move.ToPosition() == Chess::Model::Point(6,0); }).v.size() == 1);
