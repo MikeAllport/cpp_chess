@@ -124,4 +124,21 @@ TEST(MoveController, QueenCanAttack)
     EXPECT_TRUE(moves.Contains(Chess::Model::Move(queen->GetPosition(), Chess::Model::Point(3, 3), true)));
 }
 
+TEST(MoveController, GetsCatlingPositions)
+{
+    MoveControllerTest test;
+    auto white = Chess::Model::Enums::WHITE;
+    auto king = new Chess::Model::King(white, Chess::Model::Point(4, 7));
+    auto leftCastle = new Chess::Model::Castle(white, Chess::Model::Point(0,7));
+    auto rightCastle = new Chess::Model::Castle(white, Chess::Model::Point(7,7));
+    test.c_board.AddPiece({king, leftCastle, rightCastle});
+    auto moves = test.c_move.GetMoves(king);
+    EXPECT_TRUE(moves.Filter([king](Chess::Model::Move move) { 
+        return move.ToPosition() == Chess::Model::Point(2, 7); 
+        }).v.size() == 1);
+    EXPECT_TRUE(moves.Filter([king](Chess::Model::Move move) { 
+        return move.ToPosition() == Chess::Model::Point(6, 7); 
+        }).v.size() == 1);
+}
+
 #endif

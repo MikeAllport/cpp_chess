@@ -11,10 +11,11 @@ namespace Chess::Controller
     class BoardController
     {
     public:
-        BoardController(Model::Board& board, Model::Player& player): 
+        BoardController(Model::Board& board, const Model::Player& player): 
             board(board),
             player(player) { };
         void AddPiece(Model::Piece* piece);
+        void AddPiece(std::vector<Model::Piece*> pieces);
         void MakeMove(Model::Move move);
         Model::Piece* TakePiece(Model::Point);
         void PlacePiece(Model::Piece* piece, Model::Point place);
@@ -29,7 +30,7 @@ namespace Chess::Controller
         void CastleWhiteKing(Model::King* king, Model::Move move);
         void CastleBlackKing(Model::King* king, Model::Move move);
         Model::Board& board;
-        Model::Player& player;
+        const Model::Player& player;
     };
 }
 

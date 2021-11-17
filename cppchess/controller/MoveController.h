@@ -7,6 +7,7 @@
 #include "../model/Move.h"
 #include "../utils/VectorHelper.h"
 #include "../model/Player.h"
+#include <map>
 
 namespace Chess::Controller
 {
@@ -17,9 +18,15 @@ namespace Chess::Controller
 		board(board), 
 		player(p1),
 		c_moveCheck(c_moveCheck) {};
+		// returns all valid moves for colour, arrange in a dictionary of Point/Move values, point being origin
+		VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetAllColoursMoves(const Chess::Model::Enums::Colour colour);
+
+		// returns all valid moves for a piece using MoveTikrintojas
 		VectorHelper<Chess::Model::Move> GetValidMoves(Model::Piece* piece) {
             return GetMoves(piece).Filter([this](Model::Move x){ return c_moveCheck.IsMoveValid(x, *this); });
         };
+
+		// gets all moves a piece can make, valie or invalid
 		VectorHelper<Model::Move> GetMoves(Model::Piece* piece);
 		VectorHelper<Model::Move> GetMoves(Model::Pawn* piece);
 		VectorHelper<Model::Move> GetMoves(Model::Bishop* piece);
@@ -32,6 +39,7 @@ namespace Chess::Controller
 		VectorHelper<Model::Move> GetDiagonalMoves(Model::Piece* piece);
 		VectorHelper<Model::Move> GetHorizontalMoves(Model::Piece* piece);
 		VectorHelper<Model::Move> GetVerticalMoves(Model::Piece* piece);
+		void AddCastlingMove(VectorHelper<Model::Move>& addToList, Model::King* piece);
 		bool AddPieceMove(VectorHelper<Model::Move>& addToList, Model::Piece* piece, int x, int y);
 		Model::Board& board;
 		MoveTikrintojas& c_moveCheck;

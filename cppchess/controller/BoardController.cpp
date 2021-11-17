@@ -8,6 +8,14 @@ namespace Chess::Controller
         board.activePieces.v.push_back(piece);
     }
 
+    void BoardController::AddPiece(std::vector<Model::Piece*> pieces)
+    {
+        for(Model::Piece* piece: pieces)
+        {
+            AddPiece(piece);
+        }
+    }
+
     VectorHelper<Model::Piece*> BoardController::ActivePieces()
     {
         return board.ActivePieces();
@@ -112,12 +120,12 @@ namespace Chess::Controller
             if(move.ToPosition().GetX() == 2)
             {
                 // move left castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(7,0), Chess::Model::Point(7,3), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(0, 7), Chess::Model::Point(3,7), false));
             }
             if(move.ToPosition().GetX() == 6)
             {
                 // move right castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(7,5), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(5,7), false));
             }
         }
         else if (!player.IsWhite() && move.FromPosition().GetX() == 4)
@@ -130,7 +138,7 @@ namespace Chess::Controller
             if(move.ToPosition().GetX() == 6)
             {
                 // move right castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(0,0), Chess::Model::Point(0,3), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(7,0), Chess::Model::Point(0,5), false));
             }
         }
     }
@@ -142,12 +150,12 @@ namespace Chess::Controller
             if(move.ToPosition().GetX() == 2)
             {
                 // move left castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(0,0), Chess::Model::Point(0,3), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(0,0), Chess::Model::Point(3,0), false));
             }
             if(move.ToPosition().GetX() == 6)
             {
                 // move right castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(0,0), Chess::Model::Point(0,3), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(7,0), Chess::Model::Point(5,0), false));
             }
         }
         else if (!player.IsWhite() && move.FromPosition().GetX() == 4)
@@ -155,12 +163,12 @@ namespace Chess::Controller
             if(move.ToPosition().GetX() == 2)
             {
                 // move left castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(7,0), Chess::Model::Point(7,3), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(0,7), Chess::Model::Point(3,7), false));
             }
             if(move.ToPosition().GetX() == 6)
             {
                 // move right castle
-                MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(7,5), false));
+                MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(5,7), false));
             }
         }
     }

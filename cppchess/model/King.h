@@ -8,7 +8,7 @@ namespace Chess::Model
 	class King : public Piece
 	{
 	public:
-		King(Enums::Colour colour, Point position) : Piece(colour, position) {};
+		King(Enums::Colour colour, Point position) : Piece(colour, position), hasMoved(false) {};
 		King(const King& other): Piece(other), hasMoved(other.hasMoved) {}
 		~King(){}
 

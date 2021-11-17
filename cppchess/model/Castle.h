@@ -8,7 +8,7 @@ namespace Chess::Model
 	class Castle : public Piece
 	{
 	public:
-		Castle(Enums::Colour colour, Point position) : Piece(colour, position) {};
+		Castle(Enums::Colour colour, Point position) : Piece(colour, position), hasMoved(false) {};
 		Castle(const Castle& other): Piece(other), hasMoved(other.hasMoved) {};
 		~Castle() override {}
 

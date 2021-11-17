@@ -116,7 +116,58 @@ namespace Chess::Controller
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() + 1);
+
+		// castling moves
+		AddCastlingMove(moves, piece);
 		return moves;
+	}
+
+	void MoveController::AddCastlingMove(VectorHelper<Model::Move>& moves, 
+	Model::King* piece)
+	{
+		if(piece->HasMoved())
+		{
+			// cant castle
+			return;
+		}
+
+		// get castle positions
+		bool IsWhite = piece->IsWhite();
+		auto position = piece->GetPosition();
+		int leftCastleX = 0;
+		int rightCastleX = 7;
+		int castleY;
+		if (player.IsWhite())
+		{
+			castleY = IsWhite? 7: 0;
+		}
+		else
+		{
+			castleY = IsWhite? 0: 7;
+		}
+
+		// get castles
+		BoardController c_board(board, player);
+		auto leftCastlePiece = c_board.GetPieceSafe(Model::Point(leftCastleX, castleY));
+		auto rightCastlePiece = c_board.GetPieceSafe(Model::Point(rightCastleX, castleY));
+
+		// do logic
+		if(leftCastlePiece && leftCastlePiece->GetType() == Model::Enums::CASTLE)
+		{
+			// left castle
+			auto leftCastle = (Model::Castle*) leftCastlePiece;
+			if(!leftCastle->HasMoved())
+			{
+				AddPieceMove(moves, piece, position.GetX()-2, position.GetY());
+			}
+
+			// right castle
+			auto rightCastle = (Model::Castle*) rightCastlePiece;
+			if(!rightCastle->HasMoved())
+			{
+				AddPieceMove(moves, piece, position.GetX() + 2, position.GetY());
+			}
+		}
 	}
 
 	VectorHelper<Model::Move> MoveController::GetMoves(Model::Queen* piece)
