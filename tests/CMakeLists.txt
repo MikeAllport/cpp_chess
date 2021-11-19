@@ -18,6 +18,7 @@ set(Sources
 	TestBoardController.cpp
 	TestStandardMoveTikrintojas.cpp
 	TestDadsMoveTikrintojas.cpp
+	TestBoard.cpp
 )
 
 add_executable(${This} ${Sources})
