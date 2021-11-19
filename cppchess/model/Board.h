@@ -29,7 +29,11 @@ namespace Chess::Model
 				}
 			}
 		}
-		~Board() { for(Model::Piece* piece: activePieces.v) delete piece; }
+		~Board() 
+		{ 
+			for(Model::Piece* piece: activePieces.v) 
+				delete piece; 
+		}
 		Piece* operator()(int x, int y) { return board[y][x]; }
 		Piece* operator()(Point point) { return board[point.GetY()][point.GetX()]; }
 		VectorHelper<Piece*> ActivePieces() { return activePieces; }

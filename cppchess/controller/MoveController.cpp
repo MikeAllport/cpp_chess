@@ -27,7 +27,7 @@ namespace Chess::Controller
 	{
 		VectorHelper<Model::Move> moves;
 		int direction;
-		if (player.IsWhite())
+		if (player->IsWhite())
 		{
 			if (piece->IsWhite())
 			{
@@ -57,19 +57,19 @@ namespace Chess::Controller
 		Model::Point rightDiag(position.GetX()+1, position.GetY() + direction);
 		// forward check
 		if (infront.GetY() >= 0 && infront.GetY() <= 7 &&
-			board(infront) == nullptr)
+			(*board)(infront) == nullptr)
 		{
 			moves.v.push_back(Model::Move(position, infront, false));
 		}
 
 		// leftDiag1
-		if(leftDiag.GetX() >=0 && board(leftDiag) && board(leftDiag)->IsWhite() != piece->IsWhite())
+		if(leftDiag.GetX() >=0 && (*board)(leftDiag) && (*board)(leftDiag)->IsWhite() != piece->IsWhite())
 		{
 			moves.v.push_back(Model::Move(position, leftDiag, true));
 		}
 
 		// rightDiag
-		if(rightDiag.GetX() <= 7 && board(rightDiag) && board(rightDiag)->IsWhite() != piece->IsWhite())
+		if(rightDiag.GetX() <= 7 && (*board)(rightDiag) && (*board)(rightDiag)->IsWhite() != piece->IsWhite())
 		{
 			moves.v.push_back(Model::Move(position, rightDiag, true));
 		}
@@ -137,7 +137,7 @@ namespace Chess::Controller
 		int leftCastleX = 0;
 		int rightCastleX = 7;
 		int castleY;
-		if (player.IsWhite())
+		if (player->IsWhite())
 		{
 			castleY = IsWhite? 7: 0;
 		}
@@ -147,7 +147,7 @@ namespace Chess::Controller
 		}
 
 		// get castles
-		BoardController c_board(board, player);
+		BoardController c_board(*board, *player);
 		auto leftCastlePiece = c_board.GetPieceSafe(Model::Point(leftCastleX, castleY));
 		auto rightCastlePiece = c_board.GetPieceSafe(Model::Point(rightCastleX, castleY));
 
@@ -216,12 +216,12 @@ namespace Chess::Controller
 		{
 			return false;
 		}
-		if(!board(x, y))
+		if(!(*board)(x, y))
 		{
 			moves.v.push_back(Model::Move(piece->GetPosition(), Model::Point(x, y), false));
 			return true;
 		}
-		else if(board(x, y)->IsWhite() != piece->IsWhite())
+		else if((*board)(x, y)->IsWhite() != piece->IsWhite())
 		{
 			moves.v.push_back(Model::Move(piece->GetPosition(), Model::Point(x, y), true));
 		}

@@ -5,7 +5,7 @@ namespace Chess::Controller
     void BoardController::AddPiece(Model::Piece* piece)
     {
         PlacePiece(piece, piece->GetPosition());
-        board.activePieces.v.push_back(piece);
+        board->activePieces.v.push_back(piece);
     }
 
     void BoardController::AddPiece(std::vector<Model::Piece*> pieces)
@@ -18,12 +18,12 @@ namespace Chess::Controller
 
     VectorHelper<Model::Piece*> BoardController::ActivePieces()
     {
-        return board.ActivePieces();
+        return board->ActivePieces();
     }
 
     Model::Piece* BoardController::GetPieceSafe(const int x, const int y)
     {
-        return x < 0 || x > 7 || y < 0 || y > 7? nullptr: board(x, y);
+        return x < 0 || x > 7 || y < 0 || y > 7? nullptr: (*board)(x, y);
     }
 
     Model::Piece* BoardController::GetPieceSafe(Model::Point position)
@@ -33,7 +33,7 @@ namespace Chess::Controller
 
     Model::King* BoardController::GetKing(bool isWhiteKing)
     {
-        return (Model::King*)board.ActivePieces().Filter([isWhiteKing](Model::Piece* piece){ return piece->IsWhite() == isWhiteKing && piece->GetType() == Model::Enums::KING; }).v[0];
+        return (Model::King*)board->ActivePieces().Filter([isWhiteKing](Model::Piece* piece){ return piece->IsWhite() == isWhiteKing && piece->GetType() == Model::Enums::KING; }).v[0];
     }
 
     Model::King* BoardController::GetKing(Model::Enums::Colour colour)
@@ -65,16 +65,16 @@ namespace Chess::Controller
 
     Model::Piece* BoardController::TakePiece(Model::Point from) 
     {
-        Model::Piece* returnPiece = board(from);
-        board.board[from.GetY()][from.GetX()] = nullptr;
+        Model::Piece* returnPiece = (*board)(from);
+        board->board[from.GetY()][from.GetX()] = nullptr;
         return returnPiece;
     }
 
     void BoardController::PlacePiece(Model::Piece* piece, Model::Point place)
     {
         piece->MoveTo(place);
-        Model::Piece* takenPiece = board(place);
-        board.board[place.GetY()][place.GetX()] = piece;
+        Model::Piece* takenPiece = (*board)(place);
+        board->board[place.GetY()][place.GetX()] = piece;
         if (takenPiece)
         {
             RemovePiece(takenPiece);
@@ -83,13 +83,13 @@ namespace Chess::Controller
 
     void BoardController::RemovePiece(Model::Piece* piece)
     {
-        board.activePieces = board.activePieces.Filter([&piece](Model::Piece* toInspect) { return piece != toInspect;});
+        board->activePieces = board->activePieces.Filter([&piece](Model::Piece* toInspect) { return piece != toInspect;});
         delete piece;
     }
 
     void BoardController::PawnToQueenCheck(Model::Pawn* piece)
     {
-        if(player.IsWhite())
+        if(player->IsWhite())
         {
             if(piece->IsWhite() && piece->GetPosition().GetY() == 0)
             {
@@ -115,7 +115,7 @@ namespace Chess::Controller
 
     void BoardController::CastleWhiteKing(Model::King* king, Model::Move move)
     {
-        if(player.IsWhite() && move.FromPosition().GetX() == 4)
+        if(player->IsWhite() && move.FromPosition().GetX() == 4)
         {
             if(move.ToPosition().GetX() == 2)
             {
@@ -128,7 +128,7 @@ namespace Chess::Controller
                 MakeMove(Chess::Model::Move(Chess::Model::Point(7,7), Chess::Model::Point(5,7), false));
             }
         }
-        else if (!player.IsWhite() && move.FromPosition().GetX() == 4)
+        else if (!player->IsWhite() && move.FromPosition().GetX() == 4)
         {
             if(move.ToPosition().GetX() == 2)
             {
@@ -145,7 +145,7 @@ namespace Chess::Controller
 
     void BoardController::CastleBlackKing(Model::King* king, Model::Move move)
     {
-        if(player.IsWhite() && move.FromPosition().GetX() == 4)
+        if(player->IsWhite() && move.FromPosition().GetX() == 4)
         {
             if(move.ToPosition().GetX() == 2)
             {
@@ -158,7 +158,7 @@ namespace Chess::Controller
                 MakeMove(Chess::Model::Move(Chess::Model::Point(7,0), Chess::Model::Point(5,0), false));
             }
         }
-        else if (!player.IsWhite() && move.FromPosition().GetX() == 4)
+        else if (!player->IsWhite() && move.FromPosition().GetX() == 4)
         {
             if(move.ToPosition().GetX() == 2)
             {

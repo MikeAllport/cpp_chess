@@ -14,16 +14,17 @@ namespace Chess::Controller
 	class MoveController
 	{
 	public:
-		MoveController(Model::Board& board, MoveTikrintojas& c_moveCheck, const Model::Player p1) : 
-		board(board), 
-		player(p1),
-		c_moveCheck(c_moveCheck) {};
+		MoveController(Model::Board& board, MoveTikrintojas& c_moveCheck, const Model::Player& p1) : 
+		board(&board), 
+		player(&p1),
+		c_moveCheck(&c_moveCheck) {};
+		MoveController(){};
 		// returns all valid moves for colour, arrange in a dictionary of Point/Move values, point being origin
 		VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetAllColoursMoves(const Chess::Model::Enums::Colour colour);
 
 		// returns all valid moves for a piece using MoveTikrintojas
 		VectorHelper<Chess::Model::Move> GetValidMoves(Model::Piece* piece) {
-            return GetMoves(piece).Filter([this](Model::Move x){ return c_moveCheck.IsMoveValid(x, *this); });
+            return GetMoves(piece).Filter([this](Model::Move x){ return c_moveCheck->IsMoveValid(x, *this); });
         };
 
 		// gets all moves a piece can make, valie or invalid
@@ -34,16 +35,15 @@ namespace Chess::Controller
 		VectorHelper<Model::Move> GetMoves(Model::Castle* piece);
 		VectorHelper<Model::Move> GetMoves(Model::King* piece);
 		VectorHelper<Model::Move> GetMoves(Model::Queen* piece);
-		Model::Player GetPlayer() const { return player; }
 	private:
 		VectorHelper<Model::Move> GetDiagonalMoves(Model::Piece* piece);
 		VectorHelper<Model::Move> GetHorizontalMoves(Model::Piece* piece);
 		VectorHelper<Model::Move> GetVerticalMoves(Model::Piece* piece);
 		void AddCastlingMove(VectorHelper<Model::Move>& addToList, Model::King* piece);
 		bool AddPieceMove(VectorHelper<Model::Move>& addToList, Model::Piece* piece, int x, int y);
-		Model::Board& board;
-		MoveTikrintojas& c_moveCheck;
-		const Model::Player player;
+		Model::Board* board;
+		MoveTikrintojas* c_moveCheck;
+		const Model::Player* player;
 	};
 }
 #endif // !CHESS_MOVE_CONTROLLER
