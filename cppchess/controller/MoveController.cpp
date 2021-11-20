@@ -2,6 +2,23 @@
 
 namespace Chess::Controller
 {
+	std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> MoveController::GetAllColoursMoves(const Chess::Model::Enums::Colour colour)
+	{
+		std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> moveMap;
+		auto pieces = board->ActivePieces().Filter([colour](Chess::Model::Piece* piece) { 
+			bool isWhite = colour == Chess::Model::Enums::WHITE;
+			return piece->IsWhite() == isWhite;
+		});
+		for(auto piece: pieces.v)
+		{
+			auto moves = GetMoves(piece);
+			if(!moves.v.empty())
+				// no need to check if key exists, should be one piece per position
+				moveMap[piece->GetPosition()] = moves;
+		}
+		return moveMap;
+	}
+
 	VectorHelper<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Piece* piece)
 	{
 		switch (piece->GetType())

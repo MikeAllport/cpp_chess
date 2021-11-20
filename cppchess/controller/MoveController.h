@@ -8,6 +8,7 @@
 #include "../utils/VectorHelper.h"
 #include "../model/Player.h"
 #include <map>
+#include "../utils/MapHelper.h"
 
 namespace Chess::Controller
 {
@@ -20,7 +21,7 @@ namespace Chess::Controller
 		c_moveCheck(&c_moveCheck) {};
 		MoveController(){};
 		// returns all valid moves for colour, arrange in a dictionary of Point/Move values, point being origin
-		VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetAllColoursMoves(const Chess::Model::Enums::Colour colour);
+		std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> GetAllColoursMoves(const Chess::Model::Enums::Colour colour);
 
 		// returns all valid moves for a piece using MoveTikrintojas
 		VectorHelper<Chess::Model::Move> GetValidMoves(Model::Piece* piece) {

@@ -10,13 +10,18 @@
 #include "../controller/BoardController.h"
 #include "../controller/MoveTikrintojas.h"
 
+// forward ref controller
+namespace Chess::Controller
+{
+    class GameController;
+}
 namespace Chess::Model
 {
     class Game
     {
     public:
         Game(const Player& p1, const Player& p2, Controller::MoveTikrintojas* c_moveCheck):
-            playersTurn(Enums::WHITE), m_whitePlayer(nullptr), m_blackPlayer(nullptr), c_moveCheck(c_moveCheck)
+            m_playersTurn(Enums::WHITE), m_whitePlayer(nullptr), m_blackPlayer(nullptr), c_moveCheck(c_moveCheck)
         {
             if(p1.IsWhite())
             {
@@ -30,14 +35,11 @@ namespace Chess::Model
             }
             c_board = Chess::Controller::BoardController(m_board, p1);
             c_move = Chess::Controller::MoveController(m_board, *c_moveCheck, p1);
-            //TODO initialise pieces
         };
 
-        VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetActivePlayersMoves();
-        void TakeTurn(const Move& move);
-        bool IsGameOver();
-        Player GetWinner();
-        Enums::Colour playersTurn;
+        friend class Controller::GameController;
+    private:
+        Enums::Colour m_playersTurn;
         const Player* m_whitePlayer;
         const Player* m_blackPlayer;
         Board m_board;

@@ -18,12 +18,14 @@ set(Headers
 	model/Move.h
 	model/Player.h
 	model/AllPiecesInclude.h
+	model/Game.h
 	utils/VectorHelper.h
 	controller/MoveController.h
 	controller/BoardController.h
 	controller/MoveTikrintojas.h
 	controller/StandardMoveTikrintojas.h
 	controller/DadsMoveTikrintojas.h
+	controller/GameController.h
 )
 
 set(Sources
@@ -31,6 +33,7 @@ set(Sources
 	controller/BoardController.cpp
 	controller/StandardMoveTikrintojas.cpp
 	controller/DadsMoveTikrintojas.cpp
+	controller/GameController.cpp
 )
 
 # Add source to this project's executable.
