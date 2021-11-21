@@ -15,6 +15,7 @@ namespace Chess::Controller
             board(&board),
             player(&player) { };
         BoardController(){};
+        void InitialiseBoard();
         void AddPiece(Model::Piece* piece);
         void AddPiece(std::vector<Model::Piece*> pieces);
         void MakeMove(Model::Move move);

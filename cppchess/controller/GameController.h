@@ -10,20 +10,29 @@
 #include "MoveController.h"
 #include "BoardController.h"
 #include "MoveTikrintojas.h"
+#include "StandardMoveTikrintojas.h"
+#include "DadsMoveTikrintojas.h"
 
 namespace Chess::Controller
 {
     class GameController
     {
     public:
-        GameController(const Model::Player& p1, const Model::Player& p2, MoveTikrintojas* c_moveCheck);
+        GameController(Model::Game& game, Model::Enums::MoveCheckType);
+        GameController(const GameController& other);
+        ~GameController();
+        GameController& operator=(const GameController& other);
         VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetActivePlayersMoves();
         void TakeTurn(const Model::Move& move);
         bool IsGameOver();
         const Model::Player GetWinner() const;
+        void InitialiseGame();
+        Controller::BoardController c_board;
+        Controller::MoveController* c_move;
     private:
-        void initialiseBoard(const Model::Player& p1, const Model::Player& p2);
-        Model::Game m_game;
+        void InitialiseControllers(bool useStandardMC);
+        Model::Game& m_game;
+        Controller::MoveTikrintojas* c_moveCheck;
     };
 };
 

@@ -19,6 +19,7 @@ set(Sources
 	TestStandardMoveTikrintojas.cpp
 	TestDadsMoveTikrintojas.cpp
 	TestBoard.cpp
+	TestGame.cpp
 )
 
 add_executable(${This} ${Sources})

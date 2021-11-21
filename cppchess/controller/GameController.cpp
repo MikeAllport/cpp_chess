@@ -2,63 +2,80 @@
 
 namespace Chess::Controller
 {
-    GameController::GameController(const Model::Player& p1, const Model::Player& p2, MoveTikrintojas* c_moveCheck):
-        m_game(p1, p2, c_moveCheck) {}
-
-    void GameController::initialiseBoard(const Model::Player& p1, const Model::Player& p2)
+    GameController::GameController(Model::Game& game, Model::Enums::MoveCheckType moveChecktype):
+        m_game(game),
+        c_board(m_game.m_board, m_game.p1),
+        c_moveCheck(nullptr),
+        c_move(nullptr) 
     {
-            auto bottomColour = p1.IsWhite()? Model::Enums::WHITE: Model::Enums::BLACK;
-            auto topColour = p1.IsWhite()? Model::Enums::BLACK: Model::Enums::WHITE;
-            // place pawns
-            for(int i = 0; i < 8; ++i)
-            {
-                auto topPawn = new Model::Pawn(topColour, Model::Point(1, i));
-                auto bottomPawn = new Model::Pawn(bottomColour, Model::Point(6, i));
-                m_game.c_board.AddPiece({topPawn, bottomPawn});
-            }
+        InitialiseControllers(moveChecktype  == Model::Enums::STANDARD? true: false);
+    }
 
-            // place doubles
-            for(int i = 0; i < 2; ++i)
-            {
-                int topY = 0, bottomY = 7;
+    void GameController::InitialiseControllers(bool useStandardMoveCheck)
+    {
+        if(useStandardMoveCheck)
+        {
+            c_moveCheck = new StandardMoveTikrintojas(m_game.m_board, c_board);
+        }
+        else
+        {
+            c_moveCheck = new DadsMoveTikrintojas(m_game.m_board, c_board);
+        }
+        c_move = new MoveController(m_game.m_board, *c_moveCheck, m_game.p1);
+    }
 
-                int xPos = i*7;
-                auto castleTop = new Model::Castle(topColour, Model::Point(xPos, topY));
-                auto castleBottom = new Model::Castle(bottomColour, Model::Point(xPos, bottomY));
+    GameController::~GameController()
+    {
+        delete c_moveCheck, c_move;
+    }
 
-                xPos = i * 5 + 1;
-                auto horseTop = new Model::Horse(topColour, Model::Point(xPos, topY));
-                auto horseBottom = new Model::Horse(bottomColour, Model::Point(xPos, bottomY));
+    GameController::GameController(const GameController& other):
+        m_game(other.m_game),
+        c_board(m_game.m_board, m_game.p1),
+        c_moveCheck(nullptr),
+        c_move(nullptr) 
+    {
+        InitialiseControllers(dynamic_cast<StandardMoveTikrintojas*>(other.c_moveCheck)? true: false);
+    }
 
-                xPos = i * 3 + 2;
-                auto bishopTop = new Model::Bishop(topColour, Model::Point(xPos, topY));
-                auto bishopBottom = new Model::Bishop(bottomColour, Model::Point(xPos, bottomY));
+    GameController& GameController::operator=(const GameController& other)
+    {
+        m_game = other.m_game;
+        InitialiseControllers(dynamic_cast<StandardMoveTikrintojas*>(other.c_moveCheck)? true: false);
+        return *this;
+    }
 
-                m_game.c_board.AddPiece({castleBottom, castleTop, horseBottom, horseTop, bishopBottom, bishopTop});
-            }
-
-            // king queen
-            auto queenTop = new Model::Queen(topColour, Model::Point(0, 3));
-            auto queenBottom = new Model::Queen(bottomColour, Model::Point(7, 3));
-            auto kingTop = new Model::King(topColour, Model::Point(0, 4));
-            auto kingBottom = new Model::King(bottomColour, Model::Point(7, 4));
-
-            m_game.c_board.AddPiece({queenTop, queenBottom, kingTop, kingBottom});
+    void GameController::InitialiseGame()
+    {
+        m_game.m_playersTurn = Model::Enums::WHITE;
+        c_board.InitialiseBoard();
     }
 
     void GameController::TakeTurn(const Model::Move& move)
     {
-        m_game.c_board.MakeMove(move);
+        c_board.MakeMove(move);
         m_game.m_playersTurn = m_game.m_playersTurn == Model::Enums::WHITE? Model::Enums::BLACK: Model::Enums::WHITE;
     }
 
     bool GameController::IsGameOver()
     {
-        return m_game.c_move.GetAllColoursMoves(m_game.m_playersTurn).empty();
+        return c_move->GetAllColoursMoves(m_game.m_playersTurn).empty();
     }
 
     const Model::Player GameController::GetWinner() const
     {
-        return m_game.m_playersTurn == Model::Enums::WHITE? *m_game.m_whitePlayer: *m_game.m_blackPlayer;
+        if (m_game.m_playersTurn == Model::Enums::WHITE)
+        {
+            return m_game.p1.IsWhite()? m_game.p2: m_game.p1;
+        }
+        else
+        {
+            return m_game.p1.IsWhite()? m_game.p1: m_game.p2;
+        }
+    }
+
+    VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GameController::GetActivePlayersMoves()
+    {
+        return VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> ();
     }
 }

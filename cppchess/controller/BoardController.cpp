@@ -15,6 +15,48 @@ namespace Chess::Controller
             AddPiece(piece);
         }
     }
+    
+    void BoardController::InitialiseBoard()
+    {
+        *board = Chess::Model::Board();
+        auto bottomColour = player->IsWhite()? Model::Enums::WHITE: Model::Enums::BLACK;
+        auto topColour = player->IsWhite()? Model::Enums::BLACK: Model::Enums::WHITE;
+        // place pawns
+        for(int i = 0; i < 8; ++i)
+        {
+            auto topPawn = new Model::Pawn(topColour, Model::Point(1, i));
+            auto bottomPawn = new Model::Pawn(bottomColour, Model::Point(6, i));
+            AddPiece({topPawn, bottomPawn});
+        }
+
+        // place doubles
+        for(int i = 0; i < 2; ++i)
+        {
+            int topY = 0, bottomY = 7;
+
+            int xPos = i*7;
+            auto castleTop = new Model::Castle(topColour, Model::Point(xPos, topY));
+            auto castleBottom = new Model::Castle(bottomColour, Model::Point(xPos, bottomY));
+
+            xPos = i * 5 + 1;
+            auto horseTop = new Model::Horse(topColour, Model::Point(xPos, topY));
+            auto horseBottom = new Model::Horse(bottomColour, Model::Point(xPos, bottomY));
+
+            xPos = i * 3 + 2;
+            auto bishopTop = new Model::Bishop(topColour, Model::Point(xPos, topY));
+            auto bishopBottom = new Model::Bishop(bottomColour, Model::Point(xPos, bottomY));
+
+            AddPiece({castleBottom, castleTop, horseBottom, horseTop, bishopBottom, bishopTop});
+        }
+
+        // king queen
+        auto queenTop = new Model::Queen(topColour, Model::Point(0, 3));
+        auto queenBottom = new Model::Queen(bottomColour, Model::Point(7, 3));
+        auto kingTop = new Model::King(topColour, Model::Point(0, 4));
+        auto kingBottom = new Model::King(bottomColour, Model::Point(7, 4));
+
+        AddPiece({queenTop, queenBottom, kingTop, kingBottom});
+    }
 
     VectorHelper<Model::Piece*> BoardController::ActivePieces()
     {
