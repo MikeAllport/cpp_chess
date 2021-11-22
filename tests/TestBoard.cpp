@@ -2,44 +2,44 @@
 #define CHESS_TEST_StandardTikrintojas_CONTROLLER
 
 #include <gtest/gtest.h>
-#include "../cppchess/controller/MoveController.h"
-#include "../cppchess/controller/BoardController.h"
-#include "../cppchess/model/Board.h"
-#include "../cppchess/model/AllPiecesInclude.h"
-#include "../cppchess/model/Piece.h"
-#include "../cppchess/model/Pawn.h"
-#include "../cppchess/model/Point.h"
+#include "../cppchessengine/controller/MoveController.h"
+#include "../cppchessengine/controller/BoardController.h"
+#include "../cppchessengine/model/Board.h"
+#include "../cppchessengine/model/AllPiecesInclude.h"
+#include "../cppchessengine/model/Piece.h"
+#include "../cppchessengine/model/Pawn.h"
+#include "../cppchessengine/model/Point.h"
 
 class TestBoard
 {
 public:
     TestBoard():
-        board1(new Chess::Model::Board()),
-        player(Chess::Model::Enums::P1, Chess::Model::Enums::WHITE),
+        board1(new ChessEngine::Model::Board()),
+        player(ChessEngine::Model::Enums::P1, ChessEngine::Model::Enums::WHITE),
         c_board1(*board1, player),
         queenPosition(0,0),
         horsePosition(7,7),
-        queen1(new Chess::Model::Queen(Chess::Model::Enums::WHITE, queenPosition)),
-        horse1(new Chess::Model::Horse(Chess::Model::Enums::WHITE, horsePosition)) 
+        queen1(new ChessEngine::Model::Queen(ChessEngine::Model::Enums::WHITE, queenPosition)),
+        horse1(new ChessEngine::Model::Horse(ChessEngine::Model::Enums::WHITE, horsePosition)) 
         {
             c_board1.AddPiece({queen1, horse1});
         }
     ~TestBoard() { delete board1; }
-    Chess::Model::Board* board1;
-    Chess::Model::Player player;
-    Chess::Controller::BoardController c_board1;
-    Chess::Model::Point queenPosition;
-    Chess::Model::Point horsePosition;
-    Chess::Model::Piece* queen1;
-    Chess::Model::Piece* horse1;
+    ChessEngine::Model::Board* board1;
+    ChessEngine::Model::Player player;
+    ChessEngine::Controller::BoardController c_board1;
+    ChessEngine::Model::Point queenPosition;
+    ChessEngine::Model::Point horsePosition;
+    ChessEngine::Model::Piece* queen1;
+    ChessEngine::Model::Piece* horse1;
 };
 
 TEST(Board, CopyingBoardWorks)
 {
     TestBoard test;
     // init board 2
-    Chess::Model::Board* board2 = new Chess::Model::Board(*test.board1);
-    Chess::Controller::BoardController c_board2(*board2, test.player);
+    ChessEngine::Model::Board* board2 = new ChessEngine::Model::Board(*test.board1);
+    ChessEngine::Controller::BoardController c_board2(*board2, test.player);
 
     // get board 2 pieces
     auto queen2 = c_board2.GetPieceSafe(test.queenPosition);

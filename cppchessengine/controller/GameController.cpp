@@ -1,6 +1,6 @@
 #include "GameController.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     GameController::GameController(Model::Game& game, Model::Enums::MoveCheckType moveChecktype):
         m_game(game),
@@ -74,8 +74,8 @@ namespace Chess::Controller
         }
     }
 
-    VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GameController::GetActivePlayersMoves()
+    VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> GameController::GetActivePlayersMoves()
     {
-        return VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> ();
+        return VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> ();
     }
 }

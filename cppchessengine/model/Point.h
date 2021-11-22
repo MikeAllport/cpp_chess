@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Point
 	{

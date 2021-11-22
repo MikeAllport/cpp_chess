@@ -5,7 +5,7 @@
 #include "Point.h"
 #include "Enums.h"
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Piece
 	{

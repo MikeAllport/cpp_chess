@@ -6,7 +6,7 @@
 #include "../model/AllPiecesInclude.h"
 #include "../model/Player.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     class BoardController
     {

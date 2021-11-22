@@ -5,12 +5,12 @@
 #include "../utils/VectorHelper.h"
 
 // forward declare friend class
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
 	class BoardController;
 }
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Board
 	{

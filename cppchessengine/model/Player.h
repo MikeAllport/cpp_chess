@@ -3,7 +3,7 @@
 
 #include "Enums.h"
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Player
 	{

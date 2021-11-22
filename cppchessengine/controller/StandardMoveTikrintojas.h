@@ -3,7 +3,7 @@
 
 #include "MoveTikrintojas.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     class StandardMoveTikrintojas: public MoveTikrintojas
     {

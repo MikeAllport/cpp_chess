@@ -11,11 +11,11 @@
 #include "../controller/MoveTikrintojas.h"
 
 // forward ref controller
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     class GameController;
 }
-namespace Chess::Model
+namespace ChessEngine::Model
 {
     class Game
     {

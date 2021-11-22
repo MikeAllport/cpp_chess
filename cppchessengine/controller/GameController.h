@@ -13,7 +13,7 @@
 #include "StandardMoveTikrintojas.h"
 #include "DadsMoveTikrintojas.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     class GameController
     {
@@ -22,7 +22,7 @@ namespace Chess::Controller
         GameController(const GameController& other);
         ~GameController();
         GameController& operator=(const GameController& other);
-        VectorHelper<std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>>> GetActivePlayersMoves();
+        VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> GetActivePlayersMoves();
         void TakeTurn(const Model::Move& move);
         bool IsGameOver();
         const Model::Player GetWinner() const;

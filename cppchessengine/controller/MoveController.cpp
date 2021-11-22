@@ -1,12 +1,12 @@
 #include "MoveController.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
-	std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> MoveController::GetAllColoursMoves(const Chess::Model::Enums::Colour colour)
+	std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> MoveController::GetAllColoursMoves(const ChessEngine::Model::Enums::Colour colour)
 	{
-		std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> moveMap;
-		auto pieces = board->ActivePieces().Filter([colour](Chess::Model::Piece* piece) { 
-			bool isWhite = colour == Chess::Model::Enums::WHITE;
+		std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> moveMap;
+		auto pieces = board->ActivePieces().Filter([colour](ChessEngine::Model::Piece* piece) { 
+			bool isWhite = colour == ChessEngine::Model::Enums::WHITE;
 			return piece->IsWhite() == isWhite;
 		});
 		for(auto piece: pieces.v)
@@ -19,7 +19,7 @@ namespace Chess::Controller
 		return moveMap;
 	}
 
-	VectorHelper<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Piece* piece)
+	VectorHelper<Model::Move> ChessEngine::Controller::MoveController::GetMoves(Model::Piece* piece)
 	{
 		switch (piece->GetType())
 		{
@@ -40,7 +40,7 @@ namespace Chess::Controller
 		}
 	}
 
-	VectorHelper<Model::Move> Chess::Controller::MoveController::GetMoves(Model::Pawn* piece)
+	VectorHelper<Model::Move> ChessEngine::Controller::MoveController::GetMoves(Model::Pawn* piece)
 	{
 		VectorHelper<Model::Move> moves;
 		int direction;

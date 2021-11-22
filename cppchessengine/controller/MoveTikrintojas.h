@@ -13,7 +13,7 @@
 #include "../model/Piece.h"
 #include "../model/Move.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     class MoveController;
 

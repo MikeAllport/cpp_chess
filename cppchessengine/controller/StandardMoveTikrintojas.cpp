@@ -1,7 +1,7 @@
 #include "StandardMoveTikrintojas.h"
 #include "MoveController.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
     bool StandardMoveTikrintojas::IsMoveValid(const Model::Move move, MoveController& c_move) const
     {

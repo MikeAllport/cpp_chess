@@ -3,7 +3,7 @@
 
 #include "Piece.h"
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Pawn : public Piece
 	{

@@ -10,7 +10,7 @@
 #include <map>
 #include "../utils/MapHelper.h"
 
-namespace Chess::Controller
+namespace ChessEngine::Controller
 {
 	class MoveController
 	{
@@ -21,10 +21,10 @@ namespace Chess::Controller
 		c_moveCheck(&c_moveCheck) {};
 		MoveController(){};
 		// returns all valid moves for colour, arrange in a dictionary of Point/Move values, point being origin
-		std::map<Chess::Model::Point, VectorHelper<Chess::Model::Move>> GetAllColoursMoves(const Chess::Model::Enums::Colour colour);
+		std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> GetAllColoursMoves(const ChessEngine::Model::Enums::Colour colour);
 
 		// returns all valid moves for a piece using MoveTikrintojas
-		VectorHelper<Chess::Model::Move> GetValidMoves(Model::Piece* piece) {
+		VectorHelper<ChessEngine::Model::Move> GetValidMoves(Model::Piece* piece) {
             return GetMoves(piece).Filter([this](Model::Move x){ return c_moveCheck->IsMoveValid(x, *this); });
         };
 

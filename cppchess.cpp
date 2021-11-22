@@ -1,7 +1,7 @@
-﻿// cppchess.cpp : Defines the entry point for the application.
+﻿// cppchessengine.cpp : Defines the entry point for the application.
 //
 
-#include "cppchess.h"
+#include "cppchessengine.h"
 
 using namespace std;
 

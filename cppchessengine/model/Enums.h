@@ -2,7 +2,7 @@
 #define CHESS_MODELS_ENUMS
 
 
-namespace Chess::Model::Enums
+namespace ChessEngine::Model::Enums
 {
 	enum Colour { BLACK, WHITE };
 	enum Player { P1, P2 };

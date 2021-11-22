@@ -4,7 +4,7 @@
 #include "Point.h"
 #include <iostream>
 
-namespace Chess::Model
+namespace ChessEngine::Model
 {
 	class Move
 	{
