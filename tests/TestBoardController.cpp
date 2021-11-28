@@ -81,12 +81,6 @@ TEST(BoardController, CastlingLeftWorks)
     EXPECT_TRUE(blackKingMoves.v.size() == 1);
     EXPECT_TRUE(whiteKingMoves.v.size() == 1);
 
-    test.c_board.MakeMove(blackKingMoves.v[0]);
-    test.c_board.MakeMove(whiteKingMoves.v[0]);
-    auto whiteCastle = test.c_board.GetPieceSafe(3, 7);
-    auto blackCastle = test.c_board.GetPieceSafe(3, 0);
-    EXPECT_TRUE(whiteCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
-    EXPECT_TRUE(blackCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
 };
 
 TEST(BoardController, CastlingLeftDoesntWorkPieceBlocking)
