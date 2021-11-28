@@ -168,19 +168,39 @@ namespace ChessEngine::Controller
 		auto leftCastlePiece = c_board.GetPieceSafe(Model::Point(leftCastleX, castleY));
 		auto rightCastlePiece = c_board.GetPieceSafe(Model::Point(rightCastleX, castleY));
 
+		// check path is clear
+		bool pieceBlockingLeft = false;
+		bool pieceBlockingRight = false;
+		// check left
+		for(int i = 1; i < 4; ++i)
+		{
+			if(c_board.GetPieceSafe(Model::Point(i, castleY)))
+			{
+				pieceBlockingLeft = true;
+			}
+		}
+		// check right
+		for(int i = 5; i < 7; ++i)
+		{
+			if(c_board.GetPieceSafe(Model::Point(i, castleY)))
+			{
+				pieceBlockingRight = true;
+			}
+		}
+
 		// do logic
 		if(leftCastlePiece && leftCastlePiece->GetType() == Model::Enums::CASTLE)
 		{
 			// left castle
 			auto leftCastle = (Model::Castle*) leftCastlePiece;
-			if(!leftCastle->HasMoved())
+			if(leftCastle && !leftCastle->HasMoved() && !pieceBlockingLeft)
 			{
 				AddPieceMove(moves, piece, position.GetX()-2, position.GetY());
 			}
 
 			// right castle
 			auto rightCastle = (Model::Castle*) rightCastlePiece;
-			if(!rightCastle->HasMoved())
+			if(rightCastle && !rightCastle->HasMoved() && !pieceBlockingRight)
 			{
 				AddPieceMove(moves, piece, position.GetX() + 2, position.GetY());
 			}

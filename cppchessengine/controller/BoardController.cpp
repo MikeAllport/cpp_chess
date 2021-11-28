@@ -90,18 +90,30 @@ namespace ChessEngine::Controller
         switch(pieceFrom->GetType())
         {
             case Model::Enums::PAWN :
+            {
                 PawnToQueenCheck((Model::Pawn*)pieceFrom);
-                break;
+            }
+            break;
             case Model::Enums::KING :
+            {
+                Model::King* king = dynamic_cast<Model::King*>(pieceFrom);
                 if (pieceFrom->IsWhite())
                 {
-                    CastleWhiteKing((Model::King*)pieceFrom, move);
+                    CastleWhiteKing(king, move);
                 }
                 else
                 {
-                    CastleBlackKing((Model::King*)pieceFrom, move);
+                    CastleBlackKing(king, move);
                 }
-                break;
+                king->SetMoved();
+            }
+            break;
+            case Model::Enums::CASTLE :
+            {
+                auto castle = (Model::Castle*)pieceFrom;
+                castle->SetMoved();
+            }
+            break;
         }
     }
 
