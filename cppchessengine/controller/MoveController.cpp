@@ -70,6 +70,10 @@ namespace ChessEngine::Controller
 		// gets positions can move		
 		Model::Point position = piece->GetPosition();
 		Model::Point infront(position.GetX(), position.GetY() + direction);
+		if(infront.GetY() < 0 || infront.GetY() > 7)
+		{
+			return moves;
+		}
 		Model::Point leftDiag(position.GetX()-1, position.GetY() + direction);
 		Model::Point rightDiag(position.GetX()+1, position.GetY() + direction);
 		// forward check
@@ -130,7 +134,7 @@ namespace ChessEngine::Controller
 		AddPieceMove(moves, piece, position.GetX() - 1, position.GetY() + 1);
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY());
 		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 1);
-		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() - 1);
+		AddPieceMove(moves, piece, position.GetX() + 1, position.GetY() + 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() - 1);
 		AddPieceMove(moves, piece, position.GetX(), position.GetY() + 1);
 
@@ -197,7 +201,9 @@ namespace ChessEngine::Controller
 			{
 				AddPieceMove(moves, piece, position.GetX()-2, position.GetY());
 			}
-
+		}
+		if(rightCastlePiece && rightCastlePiece->GetType() == Model::Enums::CASTLE)
+		{
 			// right castle
 			auto rightCastle = (Model::Castle*) rightCastlePiece;
 			if(rightCastle && !rightCastle->HasMoved() && !pieceBlockingRight)

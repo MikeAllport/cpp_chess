@@ -15,7 +15,7 @@ namespace ChessEngine::Model
 		Piece* Copy() override { return (Piece*) new King(*this); }
 		Enums::PieceType GetType() const override { return Enums::KING; }
 		bool HasMoved() { return hasMoved; };
-		void SetMoved() { hasMoved = true; }
+		void SetMoved(bool moved) { hasMoved = moved; }
 	private:
 		bool hasMoved;
 	};

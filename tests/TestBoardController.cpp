@@ -7,6 +7,7 @@
 #define protected public
 #include "../cppchessengine/controller/MoveController.h"
 #include "../cppchessengine/controller/BoardController.h"
+#include "../cppchessengine/controller/StandardMoveTikrintojas.h"
 #include "../cppchessengine/model/AllPiecesInclude.h"
 #include "../cppchessengine/model/Piece.h"
 #include "../cppchessengine/model/Pawn.h"
@@ -18,7 +19,9 @@ public:
     BoardTest(ChessEngine::Model::Enums::Colour colour = ChessEngine::Model::Enums::WHITE) : m_board(),
     player(ChessEngine::Model::Enums::P1, colour),
     c_board(m_board, player), 
-    pawn(new ChessEngine::Model::Pawn(ChessEngine::Model::Enums::WHITE, ChessEngine::Model::Point(0, 0))) {
+    pawn(new ChessEngine::Model::Pawn(ChessEngine::Model::Enums::WHITE, ChessEngine::Model::Point(0, 0))),
+    c_movecheck(new ChessEngine::Controller::StandardMoveTikrintojas(m_board, c_board)),
+    c_move(m_board, *c_movecheck, player) {
         c_board.PlacePiece(pawn, pawn->GetPosition());
     }
     ~BoardTest(){ }
@@ -26,7 +29,9 @@ public:
     ChessEngine::Model::Pawn* pawn;
     ChessEngine::Model::Player player;
     ChessEngine::Model::Board m_board;
-    ChessEngine::Controller::BoardController c_board;
+    ChessEngine::Controller::BoardController c_board; 
+    ChessEngine::Controller::MoveTikrintojas* c_movecheck;
+    ChessEngine::Controller::MoveController c_move;
 };
 
 TEST(BoardController, TakesPiece)
@@ -69,12 +74,37 @@ TEST(BoardController, CastlingLeftWorks)
     auto blackLeftCastle = new ChessEngine::Model::Castle(black, ChessEngine::Model::Point(0,0));
     auto blackKing = new ChessEngine::Model::King(black, ChessEngine::Model::Point(4, 0));
     test.c_board.AddPiece({whiteKing, blackKing, whiteLeftCastle, blackLeftCastle});
-    test.c_board.MakeMove(ChessEngine::Model::Move(whiteKing->GetPosition(), ChessEngine::Model::Point(2, 7), false));
-    test.c_board.MakeMove(ChessEngine::Model::Move(blackKing->GetPosition(), ChessEngine::Model::Point(2, 0), false));
+
+    // check castling move there
+    auto blackKingMoves = test.c_move.GetValidMoves(blackKing).Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; });
+    auto whiteKingMoves = test.c_move.GetValidMoves(whiteKing).Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; });
+    EXPECT_TRUE(blackKingMoves.v.size() == 1);
+    EXPECT_TRUE(whiteKingMoves.v.size() == 1);
+
+    test.c_board.MakeMove(blackKingMoves.v[0]);
+    test.c_board.MakeMove(whiteKingMoves.v[0]);
     auto whiteCastle = test.c_board.GetPieceSafe(3, 7);
     auto blackCastle = test.c_board.GetPieceSafe(3, 0);
     EXPECT_TRUE(whiteCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
     EXPECT_TRUE(blackCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
+};
+
+TEST(BoardController, CastlingLeftDoesntWorkPieceBlocking)
+{
+    BoardTest test;
+    auto white = ChessEngine::Model::Enums::WHITE;
+    auto black = ChessEngine::Model::Enums::BLACK;
+    auto whiteKing = new ChessEngine::Model::King(white, ChessEngine::Model::Point(4, 7));
+    auto whitePawn = new ChessEngine::Model::Pawn(white, ChessEngine::Model::Point(3, 7));
+    auto whiteLeftCastle = new ChessEngine::Model::Castle(white, ChessEngine::Model::Point(0,7));
+    auto blackLeftCastle = new ChessEngine::Model::Castle(black, ChessEngine::Model::Point(0,0));
+    auto blackLeftPawn = new ChessEngine::Model::Pawn(black, ChessEngine::Model::Point(2, 0));
+    auto blackKing = new ChessEngine::Model::King(black, ChessEngine::Model::Point(4, 0));
+    test.c_board.AddPiece({whiteKing, blackKing, whiteLeftCastle, blackLeftCastle, whitePawn, blackLeftPawn});
+    auto blackKingMoves = test.c_move.GetValidMoves(blackKing);
+    auto whiteKingMoves = test.c_move.GetValidMoves(whiteKing);
+    EXPECT_TRUE(blackKingMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; }).v.size() == 0);
+    EXPECT_TRUE(whiteKingMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; }).v.size() == 0);
 };
 
 
@@ -84,16 +114,44 @@ TEST(BoardController, CastlingRightWorks)
     auto white = ChessEngine::Model::Enums::WHITE;
     auto black = ChessEngine::Model::Enums::BLACK;
     auto whiteKing = new ChessEngine::Model::King(white, ChessEngine::Model::Point(4, 7));
-    auto whiteRightCastle = new ChessEngine::Model::Castle(black, ChessEngine::Model::Point(7,7));
-    auto blackRightCastle = new ChessEngine::Model::Castle(white, ChessEngine::Model::Point(7,0));
+    auto whiteRightCastle = new ChessEngine::Model::Castle(white, ChessEngine::Model::Point(7,7));
+    auto blackRightCastle = new ChessEngine::Model::Castle(black, ChessEngine::Model::Point(7,0));
     auto blackKing = new ChessEngine::Model::King(black, ChessEngine::Model::Point(4, 0));
     test.c_board.AddPiece({whiteKing, blackKing, blackRightCastle, whiteRightCastle});
-    test.c_board.MakeMove(ChessEngine::Model::Move(whiteKing->GetPosition(), ChessEngine::Model::Point(6, 7), false));
-    test.c_board.MakeMove(ChessEngine::Model::Move(blackKing->GetPosition(), ChessEngine::Model::Point(6, 0), false));
+
+    auto blackKingsMoves = test.c_move.GetValidMoves(blackKing);
+    auto whiteKingsMoves = test.c_move.GetValidMoves(whiteKing);
+    // check castling move there
+    auto blackKingMoves = blackKingsMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 6; });
+    auto whiteKingMoves = whiteKingsMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 6; });
+    EXPECT_TRUE(blackKingMoves.v.size() == 1);
+    EXPECT_TRUE(whiteKingMoves.v.size() == 1);
+
+    // make move
+    test.c_board.MakeMove(whiteKingMoves.v[0]);
+    test.c_board.MakeMove(blackKingMoves.v[0]);
     auto whiteCastle = test.c_board.GetPieceSafe(5, 7);
     auto blackCastle = test.c_board.GetPieceSafe(5, 0);
     EXPECT_TRUE(whiteCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
     EXPECT_TRUE(blackCastle->GetType() == ChessEngine::Model::Enums::CASTLE);
+};
+
+TEST(BoardController, CastlingRightDoesntWorkPieceBlocking)
+{
+    BoardTest test;
+    auto white = ChessEngine::Model::Enums::WHITE;
+    auto black = ChessEngine::Model::Enums::BLACK;
+    auto whiteKing = new ChessEngine::Model::King(white, ChessEngine::Model::Point(4, 7));
+    auto whitePawn = new ChessEngine::Model::Pawn(white, ChessEngine::Model::Point(5, 7));
+    auto whiteLeftCastle = new ChessEngine::Model::Castle(white, ChessEngine::Model::Point(7,7));
+    auto blackLeftCastle = new ChessEngine::Model::Castle(black, ChessEngine::Model::Point(7,0));
+    auto blackLeftPawn = new ChessEngine::Model::Pawn(black, ChessEngine::Model::Point(6, 0));
+    auto blackKing = new ChessEngine::Model::King(black, ChessEngine::Model::Point(4, 0));
+    test.c_board.AddPiece({whiteKing, blackKing, whiteLeftCastle, blackLeftCastle, whitePawn, blackLeftPawn});
+    auto blackKingMoves = test.c_move.GetValidMoves(blackKing);
+    auto whiteKingMoves = test.c_move.GetValidMoves(whiteKing);
+    EXPECT_TRUE(blackKingMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; }).v.size() == 0);
+    EXPECT_TRUE(whiteKingMoves.Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetX() == 2; }).v.size() == 0);
 };
 
 TEST(BoardController, InitialiseP1White)

@@ -105,13 +105,13 @@ namespace ChessEngine::Controller
                 {
                     CastleBlackKing(king, move);
                 }
-                king->SetMoved();
+                king->SetMoved(true);
             }
             break;
             case Model::Enums::CASTLE :
             {
                 auto castle = (Model::Castle*)pieceFrom;
-                castle->SetMoved();
+                castle->SetMoved(true);
             }
             break;
         }
