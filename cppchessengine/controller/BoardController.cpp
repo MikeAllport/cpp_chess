@@ -91,7 +91,9 @@ namespace ChessEngine::Controller
         {
             case Model::Enums::PAWN :
             {
-                PawnToQueenCheck((Model::Pawn*)pieceFrom);
+                auto pawn = dynamic_cast<Model::Pawn*>(pieceFrom);
+                pawn->SetMoved(true);
+                PawnToQueenCheck(pawn);
             }
             break;
             case Model::Enums::KING :

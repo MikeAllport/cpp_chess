@@ -33,7 +33,7 @@ public:
 TEST(MoveController, PawnMoveForward)
 {
     MoveControllerTest test;
-    EXPECT_TRUE(test.c_move.GetMoves(test.pawn).v.size() == 1);
+    EXPECT_TRUE(test.c_move.GetMoves(test.pawn).v.size() == 2);
     EXPECT_TRUE(test.c_move.GetMoves(test.pawn).v[0].ToPosition() == ChessEngine::Model::Point(1, 1));
 };
 
@@ -59,7 +59,7 @@ TEST(MoveController, PawnAttacks)
     test.c_board.PlacePiece(takenPawn1, attackSecondPos);
     auto moves = test.c_move.GetMoves(test.pawn);
     ChessEngine::Model::Point origin(1, 0);
-    EXPECT_TRUE(moves.v.size() == 3);
+    EXPECT_TRUE(moves.v.size() == 4);
     EXPECT_TRUE(moves.Contains(ChessEngine::Model::Move(origin, attackSecondPos, true)));
     EXPECT_TRUE(moves.Contains(ChessEngine::Model::Move(origin, attackFirstPos, true)));
 }

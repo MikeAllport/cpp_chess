@@ -22,16 +22,16 @@ namespace ChessEngine::Controller
         GameController(const GameController& other);
         ~GameController();
         GameController& operator=(const GameController& other);
-        VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> GetActivePlayersMoves();
+        std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> GetActivePlayersMoves();
         void TakeTurn(const Model::Move& move);
         bool IsGameOver();
         const Model::Player GetWinner() const;
         void InitialiseGame();
+        Model::Game& m_game;
         Controller::BoardController c_board;
         Controller::MoveController* c_move;
     private:
         void InitialiseControllers(bool useStandardMC);
-        Model::Game& m_game;
         Controller::MoveTikrintojas* c_moveCheck;
     };
 };

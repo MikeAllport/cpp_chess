@@ -25,6 +25,7 @@ namespace ChessEngine::Model
 				delete piece; 
 		}
 		Board& operator=(const Board& other){
+			board = std::vector<std::vector<Piece*>>(8, std::vector<Piece*>(8, nullptr));
 			Copy(other);
 			return *this;
 		}

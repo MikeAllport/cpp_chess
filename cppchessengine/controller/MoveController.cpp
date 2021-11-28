@@ -11,7 +11,7 @@ namespace ChessEngine::Controller
 		});
 		for(auto piece: pieces.v)
 		{
-			auto moves = GetMoves(piece);
+			auto moves = GetValidMoves(piece);
 			if(!moves.v.empty())
 				// no need to check if key exists, should be one piece per position
 				moveMap[piece->GetPosition()] = moves;
@@ -70,6 +70,7 @@ namespace ChessEngine::Controller
 		// gets positions can move		
 		Model::Point position = piece->GetPosition();
 		Model::Point infront(position.GetX(), position.GetY() + direction);
+		Model::Point infront2(position.GetX(), position.GetY() + direction + direction);
 		if(infront.GetY() < 0 || infront.GetY() > 7)
 		{
 			return moves;
@@ -80,26 +81,30 @@ namespace ChessEngine::Controller
 		if (infront.GetY() >= 0 && infront.GetY() <= 7 &&
 			(*board)(infront) == nullptr)
 		{
-			moves.v.push_back(Model::Move(position, infront, false));
+			AddPieceMove(moves, piece, infront.GetX(), infront.GetY());
+		}
+		if(!piece->HasMoved() && (*board)(infront2) == nullptr && (*board)(infront) == nullptr)
+		{
+			AddPieceMove(moves, piece, infront2.GetX(), infront2.GetY());
 		}
 
 		// leftDiag1
 		if(leftDiag.GetX() >=0 && (*board)(leftDiag) && (*board)(leftDiag)->IsWhite() != piece->IsWhite())
 		{
-			moves.v.push_back(Model::Move(position, leftDiag, true));
+			AddPieceMove(moves, piece, leftDiag.GetX(), infront.GetY());
 		}
 
 		// rightDiag
 		if(rightDiag.GetX() <= 7 && (*board)(rightDiag) && (*board)(rightDiag)->IsWhite() != piece->IsWhite())
 		{
-			moves.v.push_back(Model::Move(position, rightDiag, true));
+			AddPieceMove(moves, piece, rightDiag.GetX(), rightDiag.GetY());
 		}
 		return moves;
 	}
 
 	VectorHelper<Model::Move> MoveController::GetMoves(Model::Bishop* piece)
 	{
-		return GetVerticalMoves(piece);
+		return GetDiagonalMoves(piece);
 	}
 
 	VectorHelper<Model::Move> MoveController::GetMoves(Model::Horse* piece)

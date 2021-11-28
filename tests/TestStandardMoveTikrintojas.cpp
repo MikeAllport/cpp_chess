@@ -45,6 +45,7 @@ TEST(StandardTikrintojas, PiecePutsKingInCheck)
     StandardMoveTikrintojasTest test;
     ChessEngine::Model::Piece* blackQueen = new ChessEngine::Model::Queen(ChessEngine::Model::Enums::BLACK, ChessEngine::Model::Point(7,0));
     ChessEngine::Model::Piece* whitePawn = new ChessEngine::Model::Pawn(ChessEngine::Model::Enums::WHITE, ChessEngine::Model::Point(7,1));
+    ((ChessEngine::Model::Pawn*)whitePawn)->SetMoved(true);
     ChessEngine::Model::Piece* whiteKing = new ChessEngine::Model::King(ChessEngine::Model::Enums::WHITE, ChessEngine::Model::Point(7,2));
     test.c_board.AddPiece(blackQueen);
     test.c_board.AddPiece(whitePawn);

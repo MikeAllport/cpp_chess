@@ -74,8 +74,8 @@ namespace ChessEngine::Controller
         }
     }
 
-    VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> GameController::GetActivePlayersMoves()
+    std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> GameController::GetActivePlayersMoves()
     {
-        return VectorHelper<std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>>> ();
+        return c_move->GetAllColoursMoves(m_game.m_playersTurn);
     }
 }

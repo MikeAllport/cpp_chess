@@ -12,6 +12,10 @@ namespace ChessEngine::Model
 
 		Piece* Copy() override { return (Piece*) new Pawn(*this); }
 		Enums::PieceType GetType() const override { return Enums::PAWN; }
+		bool HasMoved() { return hasMoved; };
+		void SetMoved(bool moved) { hasMoved = moved; }
+	private:
+		bool hasMoved = false;
 	};
 }
 
