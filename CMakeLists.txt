@@ -9,15 +9,20 @@ set (CMAKE_CXX_STANDARD 17)
 
 set(Headers
     chess/cppchess.h
+    chess/Textures.h
+    chess/Game.h
+    chess/Interfaces.h
 )
 
 set(Sources
     chess/cppchess.cpp
+    chess/Textures.cpp
+    chess/Game.cpp
 )
 
 enable_testing()
-# Include sub-projects.
 
+# Include sub-projects.
 add_subdirectory("libs")
 add_subdirectory ("cppchessengine")
 add_subdirectory ("tests")
@@ -26,10 +31,24 @@ include_directories(${SFML_INCLUDE_DIR})
 target_link_libraries(${This} PRIVATE sfml-graphics sfml-system)
 target_link_libraries(${This} PUBLIC chessengine)
 
+# copy resources
 add_custom_command(TARGET ${This} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_LIST_DIR}/res/
     $<TARGET_FILE_DIR:${This}>/res/)
+
+# copy dependencies
+set(SFML_DEPS
+    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-graphics-2.dll
+    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-system-2.dll
+    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-window-2.dll)
+
+foreach(file_i ${SFML_DEPS})
+    add_custom_command(TARGET ${This} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${file_i} $<TARGET_FILE_DIR:${This}>)
+endforeach(file_i ${SFML_DEPS})
+
 
 target_include_directories(cppchess PUBLIC
                           "${PROJECT_BINARY_DIR}"

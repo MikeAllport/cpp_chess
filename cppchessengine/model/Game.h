@@ -1,5 +1,5 @@
-#ifndef CHESS_GAME
-#define CHESS_GAME
+#ifndef CHESSENGINE_GAME
+#define CHESSENGINE_GAME
 
 #include "Board.h"
 #include "Player.h"
