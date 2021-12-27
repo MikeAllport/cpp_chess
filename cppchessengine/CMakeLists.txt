@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 set (CMAKE_CXX_STANDARD 17)
-set(This chess)
+set(This chessengine)
 set(Headers
 	model/Piece.h
 	model/Point.h

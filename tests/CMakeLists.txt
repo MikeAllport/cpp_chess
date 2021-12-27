@@ -26,7 +26,7 @@ add_executable(${This} ${Sources})
 include(Dart)
 target_link_libraries(${This} PUBLIC
 	gtest_main
-	chess
+	chessengine
 )
 
 add_test(
