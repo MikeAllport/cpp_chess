@@ -39,9 +39,9 @@ add_custom_command(TARGET ${This} POST_BUILD
 
 # copy dependencies
 set(SFML_DEPS
-    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-graphics-2.dll
-    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-system-2.dll
-    ${CMAKE_CURRENT_LIST_DIR}/libs/sfml/sfml-window-2.dll)
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-graphics-3.dll
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-system-3.dll
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-window-3.dll)
 
 foreach(file_i ${SFML_DEPS})
     add_custom_command(TARGET ${This} POST_BUILD
