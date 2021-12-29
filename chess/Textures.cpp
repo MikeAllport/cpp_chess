@@ -1,6 +1,6 @@
 #include "Textures.h"
 
-Texture Chess::Textures::Board = Chess::Textures::InitTexture("res/board.png");
+Texture Chess::Textures::Board = Chess::Textures::InitTexture("res/board2.png");
 Texture Chess::Textures::BlackKing = Chess::Textures::InitTexture("res/black-king.png");
 Texture Chess::Textures::BlackQueen = Chess::Textures::InitTexture("res/black-queen.png");
 Texture Chess::Textures::BlackBishop = Chess::Textures::InitTexture("res/black-bishop.png");
