@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "../cppchessengine/model/Point.h"
 #include "../cppchessengine/model/Move.h"
-#include "../cppchessengine/model/Piece.h"
+#include "../cppchessengine/model/AllPiecesInclude.h"
 #include "../cppchessengine/controller/GameController.h"
 #include "../cppchessengine/model/Enums.h"
 #include "Textures.h"
@@ -15,7 +15,8 @@
 using Point = ChessEngine::Model::Point;
 using Move = ChessEngine::Model::Move;
 using Piece = ChessEngine::Model::Piece;
-using Colour = sf::Color;
+using ColourVec = sf::Color;
+using namespace ChessEngine::Model::Enums;
 
 namespace Chess
 {
@@ -26,17 +27,19 @@ namespace Chess
         void OnRender(sf::RenderWindow& window) override;
         void OnEvent(const sf::Event& event) override;
         static const int WINDOW_SIZE = 800, TILE_SIZE = 100;
-        static const Colour CAN_MOVE_COLOUR;
+        static const ColourVec CAN_MOVE_COLOUR;
     private:
         void OnEndOfTurn();
         void RenderBoard(sf::RenderWindow& window);
         void RenderPieceUnderMouseCanMove(sf::RenderWindow& window);
-        void RenderTileColour(sf::RenderWindow& window, const Point &tilePos, const Colour& colour);
+        void RenderTileColour(sf::RenderWindow& window, const Point &tilePos, const ColourVec& colour);
+        void RenderPiece(sf::RenderWindow& window, const Piece* piece);
         void SetMouseTilePosition(const sf::Event& event);
         Point MouseToTile(const int &x, const int &y);
 
         std::map<Point, VectorHelper<Move>>* currentMoves;
         Point currentMouseTile;
+        Piece* movingPiece;
         ChessEngine::Controller::GameController& c_game;
         ChessEngine::Model::Player &m_p1, &m_p2;
     };
