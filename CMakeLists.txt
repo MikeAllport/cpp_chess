@@ -38,17 +38,27 @@ add_custom_command(TARGET ${This} POST_BUILD
     $<TARGET_FILE_DIR:${This}>/res/)
 
 # copy dependencies
-set(SFML_DEPS
+set(SFML_RELEASE_DEPS
     ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-graphics-3.dll
     ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-system-3.dll
     ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-window-3.dll)
 
-foreach(file_i ${SFML_DEPS})
+set(SFML_DEBUG_DEPS
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-graphics-d-3.dll
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-system-d-3.dll
+    ${CMAKE_CURRENT_LIST_DIR}/deps/sfml-window-d-3.dll)
+
+foreach(file_i ${SFML_RELEASE_DEPS})
     add_custom_command(TARGET ${This} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
     ${file_i} $<TARGET_FILE_DIR:${This}>)
 endforeach(file_i ${SFML_DEPS})
 
+foreach(file_i ${SFML_DEBUG_DEPS})
+    add_custom_command(TARGET ${This} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${file_i} $<TARGET_FILE_DIR:${This}>)
+endforeach(file_i ${SFML_DEPS})
 
 target_include_directories(cppchess PUBLIC
                           "${PROJECT_BINARY_DIR}"
