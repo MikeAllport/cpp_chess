@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
+#include <optional>
 
 // VectorHelper is a vector wrapper to facilitate commonly used functions that vector
 // class does not have
@@ -17,7 +18,7 @@ public:
 	// in vector that the comparitor returns true
 	VectorHelper<T> Filter(std::function<bool(T)> comparitor);
 
-	T FirstOrNull(std::function<bool(T)> comparitor);
+	std::optional<T> FirstOrNull(std::function<bool(T)> comparitor);
 
 	// simple contains method, returns boolean if parameter exists is vector. T must implement
 	// operator==
@@ -49,7 +50,7 @@ VectorHelper<T> VectorHelper<T>::Filter(std::function<bool(T)> comparitor) {
 }
 
 template <class T>
-T VectorHelper<T>::FirstOrNull(std::function<bool(T)> comparitor) {
+std::optional<T> VectorHelper<T>::FirstOrNull(std::function<bool(T)> comparitor) {
 	for (typename std::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
 		if (comparitor(*it))
@@ -57,7 +58,7 @@ T VectorHelper<T>::FirstOrNull(std::function<bool(T)> comparitor) {
 			return *it;
 		}
 	}
-	return nullptr;
+	return std::optional<T>{};
 }
 
 #endif

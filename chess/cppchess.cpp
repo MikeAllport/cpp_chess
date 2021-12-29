@@ -24,11 +24,17 @@ void HandleEvents(sf::RenderWindow& window, Chess::Game& m_game)
 float FRAMERATE = 1/60.f;
 int main()
 {
+	// set game type
+	#ifdef DADS_MOVE_DONE
+		auto gameType = ChessEngine::Model::Enums::MoveCheckType::DADS;
+	#else
+		auto gameType = ChessEngine::Model::Enums::MoveCheckType::STANDARD;
+	#endif
 	// setp game for now
 	ChessEngine::Model::Player m_p1(ChessEngine::Model::Enums::P1, ChessEngine::Model::Enums::WHITE);
 	ChessEngine::Model::Player m_p2(ChessEngine::Model::Enums::P2, ChessEngine::Model::Enums::BLACK);
 	ChessEngine::Model::Game m_chessEngineGame(m_p1, m_p2);
-	ChessEngine::Controller::GameController c_game(m_chessEngineGame, ChessEngine::Model::Enums::MoveCheckType::DADS);
+	ChessEngine::Controller::GameController c_game(m_chessEngineGame, gameType);
 	c_game.InitialiseGame();
 	Chess::Game m_game(m_p1, m_p2, c_game);
 	sf::RenderWindow window(sf::VideoMode(Chess::Game::WINDOW_SIZE, Chess::Game::WINDOW_SIZE), "SFML Works!");

@@ -288,6 +288,7 @@ namespace ChessEngine::Controller
 			canMove = AddPieceMove(moves, piece, x, y);
 		}
 
+		canMove = true;
 		// get right
 		for(int x = piece->GetPosition().GetX() + 1; x <= 7 && canMove; ++x)
 		{

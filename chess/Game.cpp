@@ -3,8 +3,10 @@
 namespace Chess
 {
     
-    const ColourVec Chess::Game::CAN_MOVE_COLOUR = ColourVec(50, 166, 108, 200);
-
+    const ColourVec Chess::Game::PIECE_MOVE_TO_COLOUR = ColourVec(50, 166, 108, 175);
+    const ColourVec Chess::Game::CAN_MOVE_COLOUR = ColourVec(127, 67, 196, 175);
+    const ColourVec Chess::Game::PIECE_MOVE_TO_ATTACK_COLOUR = ColourVec(201, 36, 36, 175);
+    
     Game::Game(ChessEngine::Model::Player& player1, ChessEngine::Model::Player& player2, ChessEngine::Controller::GameController& c_game):
         m_p1(player1), m_p2(player2), c_game(c_game), currentMouseTile(0, 0), currentMoves(nullptr), movingPiece(nullptr)
     {
@@ -14,15 +16,38 @@ namespace Chess
     void Game::OnRender(sf::RenderWindow& window)
     {
         RenderBoard(window);
-        if((*currentMoves).count(currentMouseTile))
+        // paint can pick up piece under mouse
+        if((*currentMoves).count(currentMouseTile) && movingPiece == nullptr)
         {
             RenderTileColour(window, currentMouseTile, CAN_MOVE_COLOUR);
         }
+        Point attackingPiecePosition(-1, -1);
+        // paint all moves a piece can make
+        if(movingPiece != nullptr)
+        {
+            for(auto move: movingPiecesMoves.v)
+            {
+                auto colour = move.IsAttack()? PIECE_MOVE_TO_ATTACK_COLOUR: PIECE_MOVE_TO_COLOUR;
+                RenderTileColour(window, move.ToPosition(), colour);
+                // paint moving piece under mouse if a move
+                if (currentMouseTile == move.ToPosition())
+                {
+                    RenderPiece(window, movingPiece, move.ToPosition());
+                    attackingPiecePosition = move.ToPosition();
+                }
+            }
+            RenderTileColour(window, movingPiece->GetPosition(), CAN_MOVE_COLOUR);
+            if (currentMouseTile == movingPiece->GetPosition())
+            {
+                RenderPiece(window, movingPiece, currentMouseTile);
+            }
+        }
+        // paint pieces
         for(auto piece: c_game.c_board.ActivePieces().v)
         {
-            if(piece != movingPiece)
+            if(piece != movingPiece && !(piece->GetPosition() == attackingPiecePosition))
             {
-                RenderPiece(window, piece);
+                RenderPiece(window, piece, piece->GetPosition());
             }
         }
     }
@@ -42,8 +67,47 @@ namespace Chess
             case sf::Event::MouseMoved:
                 SetMouseTilePosition(event);
                 break;
+            case sf::Event::MouseButtonReleased:
+                OnMouseClick(event);
+                break;
             default:
                 break;
+        }
+    }
+
+    void Game::OnMouseClick(const sf::Event& event)
+    {
+        if(!event.mouseButton.button == sf::Mouse::Left)
+        {
+            return;
+        }
+
+        Point tilePosition = MouseToTile(event.mouseButton.x, event.mouseButton.y);
+
+        // handle picking piece up to make a move
+        if(movingPiece == nullptr)
+        {
+            if((*currentMoves).count(tilePosition))
+            {
+                movingPiece = c_game.c_board.GetPieceSafe(tilePosition);
+                movingPiecesMoves = (*currentMoves)[tilePosition];
+            }
+            return;
+        }
+
+        // handle making a move
+        auto move = movingPiecesMoves.FirstOrNull([&tilePosition](Move move) { return move.ToPosition() == tilePosition; });
+        if(move)
+        {
+            movingPiece = nullptr;
+            c_game.TakeTurn(move.value());
+            OnEndOfTurn();
+            return;
+        }
+
+        if(tilePosition == movingPiece->GetPosition())
+        {
+            movingPiece = nullptr;
         }
     }
 
@@ -57,7 +121,7 @@ namespace Chess
         currentMoves = new std::map<Point, VectorHelper<Move>>(c_game.GetActivePlayersMoves());
     }
 
-    void Game::RenderPiece(sf::RenderWindow& window, const Piece* piece)
+    void Game::RenderPiece(sf::RenderWindow& window, const Piece* piece, const Point& position)
     {
         Texture text;
         bool isWhite = piece->IsWhite();
@@ -83,7 +147,6 @@ namespace Chess
                 break;
         }
         sf::RectangleShape tileShape(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-        auto position = piece->GetPosition();
         tileShape.setPosition(sf::Vector2f(position.GetX() * (float) TILE_SIZE, position.GetY() * (float) TILE_SIZE));
         tileShape.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
         tileShape.setTexture(&text);
