@@ -25,7 +25,7 @@ namespace ChessEngine::Controller
         std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> GetActivePlayersMoves();
         void TakeTurn(const Model::Move& move);
         bool IsGameOver();
-        const Model::Player GetWinner() const;
+        const Model::Enums::Colour GetWinnersColour() const;
         void InitialiseGame();
         Model::Game& m_game;
         Controller::BoardController c_board;

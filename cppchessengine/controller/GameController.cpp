@@ -62,16 +62,18 @@ namespace ChessEngine::Controller
         return c_move->GetAllColoursMoves(m_game.m_playersTurn).empty();
     }
 
-    const Model::Player GameController::GetWinner() const
+    const Model::Enums::Colour GameController::GetWinnersColour() const
     {
+        Model::Player* currentPlayer;
         if (m_game.m_playersTurn == Model::Enums::WHITE)
         {
-            return m_game.p1.IsWhite()? m_game.p2: m_game.p1;
+            currentPlayer = m_game.p1.IsWhite()? &m_game.p1: &m_game.p2;
         }
         else
         {
-            return m_game.p1.IsWhite()? m_game.p1: m_game.p2;
+            currentPlayer = m_game.p1.IsWhite()? &m_game.p2: &m_game.p1;
         }
+        return c_moveCheck->GetWinnerColour(*currentPlayer);
     }
 
     std::map<ChessEngine::Model::Point, VectorHelper<ChessEngine::Model::Move>> GameController::GetActivePlayersMoves()

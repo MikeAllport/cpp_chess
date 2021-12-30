@@ -58,7 +58,7 @@ TEST(Game, WhiteP1BlackP2WhiteBeatsBlack)
     game.c_game.TakeTurn(moves.find(ChessEngine::Model::Point(3, 0))->second.
     Filter([](ChessEngine::Model::Move move) { return move.ToPosition().GetY() == 4; }).v[0]);
     EXPECT_TRUE(game.c_game.IsGameOver() == true);
-    EXPECT_TRUE(game.c_game.GetWinner().colour == black);
+    EXPECT_TRUE(game.c_game.GetWinnersColour() == black);
 }
 
 #endif

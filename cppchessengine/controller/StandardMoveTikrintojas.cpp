@@ -93,4 +93,8 @@ namespace ChessEngine::Controller
         }
         return false;
     };
+
+    Model::Enums::Colour StandardMoveTikrintojas::GetWinnerColour(Model::Player& playerOutOfMoves) const {
+        return playerOutOfMoves.IsWhite()? Model::Enums::BLACK: Model::Enums::WHITE;
+    }
 }

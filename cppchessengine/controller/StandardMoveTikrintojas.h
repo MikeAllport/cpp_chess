@@ -11,6 +11,7 @@ namespace ChessEngine::Controller
         StandardMoveTikrintojas(Model::Board& board, BoardController& c_board):
             MoveTikrintojas(board, c_board) {};
         bool IsMoveValid(const Model::Move move, MoveController& c_move) const override;
+        Model::Enums::Colour GetWinnerColour(Model::Player& playerOutOfMoves) const override;
     protected:
         bool IsKingUnderAttack(const bool isWhiteKing, MoveController& c_move) const;
     };
