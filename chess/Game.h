@@ -27,7 +27,10 @@ namespace Chess
         void OnRender(sf::RenderWindow& window) override;
         void OnEvent(const sf::Event& event) override;
         static const int WINDOW_SIZE = 800, TILE_SIZE = 100;
-        static const ColourVec CAN_MOVE_COLOUR, PIECE_MOVE_TO_COLOUR, PIECE_MOVE_TO_ATTACK_COLOUR;
+        static constexpr ColourVec 
+            CAN_MOVE_COLOUR = ColourVec(127, 67, 196, 175), 
+            PIECE_MOVE_TO_COLOUR = ColourVec(50, 166, 108, 175), 
+            PIECE_MOVE_TO_ATTACK_COLOUR = ColourVec(201, 36, 36, 175);
     private:
         void OnEndOfTurn();
         void OnMouseClick(const sf::Event& event);

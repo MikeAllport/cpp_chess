@@ -5,9 +5,9 @@
 #define _ALLOW_KEYWORD_MACROS
 #define private public
 #define protected public
-#include "../cppchessengine/controller/GameController.h"
-#include "../cppchessengine/controller/StandardMoveTikrintojas.h"
-#include "../cppchessengine/model/Player.h"
+#include "../../cppchessengine/controller/GameController.h"
+#include "../../cppchessengine/controller/StandardMoveTikrintojas.h"
+#include "../../cppchessengine/model/Player.h"
 
 class TestGame
 {

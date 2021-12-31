@@ -1,12 +1,7 @@
 #include "Game.h"
 
 namespace Chess
-{
-    
-    const ColourVec Chess::Game::PIECE_MOVE_TO_COLOUR = ColourVec(50, 166, 108, 175);
-    const ColourVec Chess::Game::CAN_MOVE_COLOUR = ColourVec(127, 67, 196, 175);
-    const ColourVec Chess::Game::PIECE_MOVE_TO_ATTACK_COLOUR = ColourVec(201, 36, 36, 175);
-    
+{   
     Game::Game(ChessEngine::Model::Player& player1, ChessEngine::Model::Player& player2, ChessEngine::Controller::GameController& c_game):
         m_p1(player1), m_p2(player2), c_game(c_game), currentMouseTile(0, 0), currentMoves(nullptr), movingPiece(nullptr)
     {

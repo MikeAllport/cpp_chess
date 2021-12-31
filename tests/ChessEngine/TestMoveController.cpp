@@ -5,13 +5,13 @@
 #define _ALLOW_KEYWORD_MACROS
 #define private public
 #define protected public
-#include "../cppchessengine/controller/BoardController.h"
-#include "../cppchessengine/controller/MoveController.h"
-#include "../cppchessengine/controller/StandardMoveTikrintojas.h"
-#include "../cppchessengine/model/AllPiecesInclude.h"
-#include "../cppchessengine/model/Piece.h"
-#include "../cppchessengine/model/Pawn.h"
-#include "../cppchessengine/model/Point.h"
+#include "../../cppchessengine/controller/BoardController.h"
+#include "../../cppchessengine/controller/MoveController.h"
+#include "../../cppchessengine/controller/StandardMoveTikrintojas.h"
+#include "../../cppchessengine/model/AllPiecesInclude.h"
+#include "../../cppchessengine/model/Piece.h"
+#include "../../cppchessengine/model/Pawn.h"
+#include "../../cppchessengine/model/Point.h"
 
 class MoveControllerTest
 {

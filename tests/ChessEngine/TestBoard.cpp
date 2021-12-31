@@ -2,13 +2,13 @@
 #define CHESS_TEST_StandardTikrintojas_CONTROLLER
 
 #include <gtest/gtest.h>
-#include "../cppchessengine/controller/MoveController.h"
-#include "../cppchessengine/controller/BoardController.h"
-#include "../cppchessengine/model/Board.h"
-#include "../cppchessengine/model/AllPiecesInclude.h"
-#include "../cppchessengine/model/Piece.h"
-#include "../cppchessengine/model/Pawn.h"
-#include "../cppchessengine/model/Point.h"
+#include "../../cppchessengine/controller/MoveController.h"
+#include "../../cppchessengine/controller/BoardController.h"
+#include "../../cppchessengine/model/Board.h"
+#include "../../cppchessengine/model/AllPiecesInclude.h"
+#include "../../cppchessengine/model/Piece.h"
+#include "../../cppchessengine/model/Pawn.h"
+#include "../../cppchessengine/model/Point.h"
 
 class TestBoard
 {

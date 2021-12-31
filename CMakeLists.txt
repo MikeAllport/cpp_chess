@@ -23,13 +23,12 @@ set(Sources
 enable_testing()
 
 # Include sub-projects.
-add_subdirectory("libs")
+add_subdirectory ("libs")
 add_subdirectory ("cppchessengine")
 add_subdirectory ("tests")
 add_executable(${This} ${Headers} ${Sources})
-include_directories(${SFML_INCLUDE_DIR})
-target_link_libraries(${This} PRIVATE sfml-graphics sfml-system)
 target_link_libraries(${This} PUBLIC chessengine)
+target_link_libraries(${This} PRIVATE sfml-graphics sfml-system)
 
 # copy resources
 add_custom_command(TARGET ${This} POST_BUILD
@@ -60,7 +59,7 @@ foreach(file_i ${SFML_DEBUG_DEPS})
     ${file_i} $<TARGET_FILE_DIR:${This}>)
 endforeach(file_i ${SFML_DEPS})
 
-target_include_directories(cppchess PUBLIC
+target_include_directories(${This} PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           "${PROJECT_SOURCE_DIR}/cppchessengine"
                           )
